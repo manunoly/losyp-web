@@ -1,0 +1,132 @@
+<div class="main-content content-business single-business has-bg-image" style="background-color: #f5f5f5;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+
+                    <h1 class="text-center">Pagar servicio</h1>
+
+                <div class="field custom-select-box">
+                    <label for="membership">Membresía</label>
+                    <select id="membership" class="custom-select" [(ngModel)]="model.membership">
+                        <option *ngFor="let membership of memberships" [value]="membership.id">{{membership.title}}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="field custom-select-box">
+                    <label for="pay">Tipo de pago</label>
+                    <select id="pay" name="pay" (change)="model.type === 1 ? model.type = 2 : model.type = 1"
+                            class="custom-select">
+                        <option [value]="1">Evidencia de pago</option>
+                        <option [value]="2">Pago en línea</option>
+                    </select>
+                </div>
+
+                <div *ngIf="model.type === 1; then evidence else line"></div>
+                <br>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #evidence>
+    <h5 class="">Subir evidencia de pago</h5>
+    <div class="">
+        <div style="width: 133px; height: 122.891px;">
+            <img name="preview" class="d-flex align-self-center" width="115"
+                 src="{{previewvalue}}" alt=""
+                 style="border: 1px solid #bcbcbc; padding: 5px; width: 90%; height: 100%;" appImageZoom>
+        </div>
+        <label class="fileContainer cp">
+            <button mat-raised-button color="primary">
+                <mat-icon>camera</mat-icon>
+                Subir foto
+            </button>
+            <input type="file" class="" name="evidence" size="20"
+                   (change)="onFileChange($event)" #fileInput/>
+        </label>
+    </div>
+    <br>
+    <div class="form-group text-center">
+        <input type="submit" class="btn btn-primary" (click)="payEvidence()"
+               [disabled]="loading || previewvalue === '../assets/service_img.png'" value="Notificar pago">
+        <div *ngIf="loading">
+            <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                 alt="">
+        </div>
+    </div>
+
+</ng-template>
+
+
+<ng-template #line>
+    <label for="namepay">Nombre en la tarjeta</label>
+    <input id="namepay" placeholder="" name="namepay" type="text"
+           [(ngModel)]="model.namepay"
+           required>
+    <label for="numberpay">Numero de tarjeta</label>
+    <input id="numberpay" placeholder="" name="numberpay" type="text"
+           [(ngModel)]="model.numberpay"
+           required>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="caducidadpay">Caducidad2</label>
+            <input id="caducidadpay" placeholder="" name="caducidadpay" type="date"
+                   [(ngModel)]="model.caducidadpay"
+                   required></div>
+        <div class="col-md-6">
+            <label for="cvvpay">CVV</label>
+            <input id="cvvpay" placeholder="" name="cvvpay" type="text"
+                   [(ngModel)]="model.cvvpay"
+                   required>
+        </div>
+    </div>
+    <br>
+
+    <div class="form-group text-center">
+        <input type="submit" class="btn btn-primary" (click)="payLine()"
+               [disabled]="loading || model.namepay?.length === 0 || model.numberpay?.length === 0
+               || model.caducidadpay?.length === 0 || model.cvvpay?.length === 0" value="Realizar pago">
+        <div *ngIf="loading">
+            <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                 alt="">
+        </div>
+    </div>
+
+
+</ng-template>
+<div class="container">
+    <h2 class="text-center">Pagos Realizados</h2>
+    <div class="row" >
+        <div *ngFor="let pago of pagos; let i = index">
+            <div class="row">
+
+                    <div class="col-md-3">
+                        <img (tap)="viewImg(pago.evidence)" [src]="pago.evidence?pago.evidence:'assets/imgs/service_img.png'">
+                    </div>
+                    <div class="col-md-9">
+                        <div> Pago {{getPaymentType(pago.type)}} del servicio {{pago.nservice}}<br>
+
+                            <label>
+                                Membresia:
+                            </label>
+                            {{pago.membership.title}}
+                            <br>
+                            <label>
+                                Precio:
+                            </label>
+                            {{pago.membership.price}}$
+                            <br>
+                            <div *ngIf="pago.type==2">
+                                <label>Tarjeta:</label>{{getTarjetaValues(pago)}}
+                            </div>
+                            <label>Estado:</label>{{getPaymentState(pago.state)}} &nbsp;<label>Fecha:</label>{{ pago.created_at.date | date: 'd/M/y' }}
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>

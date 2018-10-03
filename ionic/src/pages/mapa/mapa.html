@@ -1,0 +1,43 @@
+<ion-header>
+
+  <app-header [showInput]="false" [showSearch]="false"></app-header>
+
+</ion-header>
+
+
+<ion-content padding>
+    <serv-up-info [passedService]="service" [cantComentarios]="cant_c" (rateService)="rateService($event)"></serv-up-info>
+
+    <ion-label text-center color="azul-claro">
+        Mis ubicaciones {{pepe}}
+    </ion-label>
+    <ion-card>
+
+        <ion-item>
+            <div #map id="map"></div>
+ <!--            <ion-fab class="fs-15" left bottom>
+                <button ion-fab mini (click)="getLocation()">
+                 <ion-icon name="pin"></ion-icon>
+                 </button>
+            </ion-fab> -->
+        </ion-item>
+
+        <ion-item *ngFor="let p of positions; let i = index">
+            <h2>{{p.title}}</h2>
+            <!-- <h2>{{p.title}}<span id="{{'pos' + i}}"></span></h2> -->
+            <button [disabled]="!havePosition" *ngIf="!destino" (click)="launchMaps(p)" ion-button icon-left clear item-end>
+        <ion-icon name="navigate"></ion-icon>
+        Ir
+      </button>
+            <button color="danger" *ngIf="destino && p.id == destino.id" (click)="cancelarRoute()" ion-button icon-left clear item-end>
+        <ion-icon  name="close"></ion-icon>
+       Cancelar
+      </button>
+        </ion-item>
+
+    </ion-card>
+
+
+
+
+</ion-content>

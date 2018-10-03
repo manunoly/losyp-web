@@ -1,0 +1,278 @@
+<div class="main-content content-business single-business has-bg-image" data-bg-color="f5f5f5"
+     style="background-color: #f5f5f5;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="listing listing-1 single-listing">
+                    <div class="listing-ver-1">
+                        <div class="listing-heading">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-8"><h5>{{service.title}}
+                                    <span *ngIf="service.professional" href="#" class="c-red">(PRO)</span>
+                                </h5></div>
+                                <!--<a *ngIf="service.professional" href="#" class="c-red"><i class="fa fa-bookmark"></i></a>-->
+                                <div class="col-xs-6 col-sm-4">
+                                    <ul class="showrate pull-right" [innerHTML]="result_rate(service.globalrate)">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="listing-tabs">
+                            <ul>
+                                <li class="active tab"><a href="#basic" data-target="basic" data-toggle="tab"><i class="fa fa-info"></i></a>
+                                </li>
+                                <li><a class="tab" href="#moreinfo" data-target="moreinfo" data-toggle="tab"><i class="fa fa-plus"></i></a></li>
+                                <li><a class="tab" href="#contact" data-target="contact" (click)="MapPos()" data-toggle="tab"><i
+                                        class="fa fa-map-marker"></i></a></li>
+                                <!--<li><a href="#report" data-toggle="tab"><i class="fa fa-comments"></i></a></li>-->
+                                <li><a class="tab" href="#hours" data-target="hours" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <div id="basic" class="tab-pane fade in active basic-single">
+                                <div class="listing-inner" style="min-height: 420px;">
+                                    <div class="listing-content">
+                                        <div class="listing-content-inner">
+                                            <div class="listing-content-thumbnail">
+                                                <!--<img src="{{service.icon}}" alt="">-->
+                                                <div class="flexslider default-slider">
+                                                   <ul class="slides">
+                                                        <!--<li><img src="{{service.thumb}}" alt=""></li>-->
+                                                        <li *ngFor="let image of service.imagesList"><img src="{{image.thumb}}"
+                                                                                                          alt=""></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="listing-content-description margin-description">
+                                                <p>{{service.subtitle}}</p>
+                                                <p>{{service.description}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<button class="pull-right" [disabled]="!loggedIn" mat-raised-button color="primary"-->
+                                        <!--(click)="loggedIn ? reportDialog(service.id): openSnackBar('Debe iniciar sesión', 2500);">-->
+                                    <!--Favorito-->
+                                <!--</button>-->
+                                <button class="pull-right" [disabled]="!loggedIn" mat-raised-button color="primary"
+                                        (click)="loggedIn ? reportDialog(service.id): openSnackBar('Debe iniciar sesión', 2500);">
+                                    Denunciar
+                                </button>
+                                <button class="pull-right mr-10" [disabled]="!loggedIn || service.rated != null" mat-raised-button
+                                        color="primary"
+                                        (click)="ratingDialog(service.id)">
+                                    Evaluar
+                                </button>
+                            </div>
+                            <div id="moreinfo" class="tab-pane fade in contact">
+                                <div class="listing-inner">
+                                    <div class="listing-content">
+                                        <h6 class="main-title">Información adicional</h6>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <ul class="contact">
+                                                    <li>
+                                                        <h6>Correo:</h6>
+                                                        <a href="mailto:{{service.email}}"><span>{{service.email}}</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Sitio web:</h6>
+                                                        <a target="_blank" href="{{service.url}}"> <span>{{service.url}}</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul class="contact">
+                                                    <li>
+                                                        <h6>Teléfono:</h6>
+                                                        <a href="tel:+593{{service.phone}}"><span>{{service.phone}}</span></a>
+                                                    </li>
+                                                    <li>
+                                                        <h6>Télefono adicional:</h6>
+                                                        <a href="tel:+593{{service.other_phone}}"><span>{{service.other_phone}}</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <ul class="contact">
+                                                    <li>
+                                                        <h6>Direccion:</h6>
+                                                        <span>{{service.address}}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="contact" class="tab-pane fade in contact">
+                                <div class="listing-inner">
+                                    <div class="listing-content">
+                                        <h6 class="main-title">Mis ubicaciones</h6>
+                                        <div #map id="map"></div>
+                                        <br>
+                                        <h6 class="">Mas cercano:</h6>
+
+                                        <br>
+                                        <h6 class="">Adicionales</h6>
+                                        <hr class="bc-grei">
+                                        <div *ngFor="let currentposition of service.positionsList; let pos = index">
+                                            <div class="row" style="width: 100%;">
+                                                <div class="col-2 col-sm-2 col-md-2 col-lg-2"
+                                                     style="padding-right: 0; padding-top: 9px;">
+                                                    <mat-icon style="position: absolute;" class="tc-blue md-3">
+                                                        location_on
+                                                    </mat-icon>
+                                                </div>
+                                                <div class="col-7 col-sm-7 col-md-7 col-lg-7" style="padding-left: 0;">
+                                                    <h6 class="tc-blue mb-0" style="margin-top: 12px;">
+                                                        {{currentposition.title}}</h6>
+                                                </div>
+                                                <div class="col-3 col-sm-3 col-md-3 col-lg-3">
+
+                                                    <button class="tc-white pull-right" (click)="changeCurrentEnd(pos)"
+                                                            mat-icon-button>
+                                                        <mat-icon color="primary" [ngClass]="{'tc-red':(currentEnd.id !== -1 && currentEnd.id ===
+                                        pos)}">{{(currentEnd.id !== -1 && currentEnd.id ===
+                                                            pos)?'location_off':'navigation'}}
+                                                        </mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="hours" class="tab-pane fade in hours">
+                                <div class="listing-inner">
+                                    <div class="listing-content">
+                                        <h6 class="main-title">Horario</h6>
+                                        <div class="row">
+                                            <ul class="schedule" *ngFor="let time of service.timesList">
+                                                <li><span class=""
+                                                          [innerHTML]="result_week_days(time.week_days)"></span><span
+                                                        class="hours">{{time.start_time}} - {{time.end_time}}</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="advertiser-info">
+                    <div class="advertiser-header">
+                        <h5>Comentarios</h5>
+                    </div>
+                    <div class="advertiser-inner">
+                        <div class="row">
+                            <div *ngIf="comment === 0">
+                                <span class="tc-grei">No existen comentarios</span>
+                            </div>
+
+                            <div id="comments" *ngFor="let currentcomment of service.servicecommentsList">
+                                <div [class]="(currentcomment.reportuser !== null) ? 'report-comment': ''">
+                                    <mat-grid-list cols="12" rowHeight="30px">
+                                        <mat-grid-tile [colspan]="8" [rowspan]="1" class="izq">
+                                            <h6 class="mb-0">{{currentcomment.user.username}}</h6>
+                                        </mat-grid-tile>
+                                        <mat-grid-tile class="comment-date" [colspan]="4" [rowspan]="1">
+                                            <!--<span class="">{{currentcomment.created.date | date: 'mediumDate'}}</span>-->
+                                            <span class="showrate"
+                                                  [innerHTML]="result_rate(currentcomment.rate)"></span>
+                                        </mat-grid-tile>
+                                    </mat-grid-list>
+                                    <div>
+                                        <p class="tc-grei" style="word-wrap: break-word !important;">{{currentcomment.comment}}</p>
+                                        <mat-grid-list *ngIf="(service.author.email === currentUser) && loggedIn"
+                                                       cols="10"
+                                                       rowHeight="26px">
+                                            <mat-grid-tile [colspan]="8" [rowspan]="1" class="izq">
+                                            </mat-grid-tile>
+                                            <mat-grid-tile class="" [colspan]="1" [rowspan]="1">
+                                                <button (click)="reportComment(currentcomment.id)" mat-raised-button
+                                                        class="bc-red tc-white">
+                                                    <mat-icon>mic</mat-icon>
+                                                </button>
+                                            </mat-grid-tile>
+                                            <mat-grid-tile class="" [colspan]="1" [rowspan]="1">
+                                                <button id="hided-{{currentcomment.id}}"
+                                                        (click)="hideComment(currentcomment.id, currentcomment.hided)"
+                                                        mat-raised-button
+                                                        class="tc-white"
+                                                        [ngClass]="(!currentcomment.hided) ? 'bc-green' : 'bc-red'">
+                                                    <mat-icon>{{(!currentcomment.hided) ? 'done' : 'clear'}}</mat-icon>
+                                                </button>
+                                            </mat-grid-tile>
+                                        </mat-grid-list>
+
+                                        <mat-grid-list *ngIf="(service.author.email !== currentUser) && loggedIn"
+                                                       cols="10"
+                                                       rowHeight="26px">
+                                            <mat-grid-tile [colspan]="9" [rowspan]="1" class="izq">
+                                            </mat-grid-tile>
+                                            <mat-grid-tile class="" [colspan]="1" [rowspan]="1">
+                                                <button (click)="reportComment(currentcomment.id)" mat-raised-button
+                                                        class="bc-red tc-white">
+                                                    <mat-icon>mic</mat-icon>
+                                                </button>
+                                            </mat-grid-tile>
+                                        </mat-grid-list>
+                                        <hr class="bc-grei">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div class="advertiser-info">-->
+                <!--<div class="advertiser-header">-->
+                <!--<h5>Insertar comentario</h5>-->
+                <!--</div>-->
+                <!--<div class="advertiser-inner">-->
+                <!--<div class="row">-->
+                <!--<form *ngIf="loggedIn" [formGroup]="commentForm"-->
+                <!--(ngSubmit)="commentForm.valid && sendComment()">-->
+                <!--<span *ngIf="commentForm.controls['textcomment'].invalid" class="tc-red">-->
+                <!--{{getErrorMessage()}}-->
+                <!--</span>-->
+                <!--<textarea rows="4" name="textcomment" placeholder="Escribe tu comentario" #textcomment-->
+                <!--[formControl]="commentForm.controls['textcomment']"-->
+                <!--[(ngModel)]="model.textcomment"></textarea>-->
+
+                <!--<div class="form-group">-->
+                <!--<input class="btn btn-primary" [disabled]="loading || !submitAttempt" value="Enviar"-->
+                <!--type="submit">-->
+                <!--<img *ngIf="loading"-->
+                <!--src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="-->
+                <!--/>-->
+                <!--</div>-->
+                <!--</form>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="col-md-3">
+                <div class="sidebar-listing">
+                    <h5 class="sidebar-listing-title">Servicios similares</h5>
+                    <div *ngFor="let service of recentvisits" class="listing-offer">
+                        <h6 class="title"><a [routerLink]="['/service', service.id]">{{service.title}}</a></h6>
+                        <div class="listing-offer-thumbnail">
+                            <img src="{{service.thumb}}" alt="">
+                        </div>
+                        <div class="listing-offer-content">
+                            <span class="location"><i
+                                    class="fa fa-map-marker"></i> {{service.citiesList[0].title}}</span>
+                            <ul class="rate" [innerHTML]="result_rate(service.globalrate)">
+                            </ul>
+                            <span class="count">{{service.visits}} vistas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

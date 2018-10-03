@@ -1,0 +1,358 @@
+<!--<div class="col-12">-->
+<!--<h4 class="tc-blue">{{edit ? 'Editar anuncio:' : 'Crear anuncio:'}}</h4>-->
+<!--<hr class="bc-grei">-->
+<!---->
+<!--</div>-->
+
+<div class="main-content content-business single-business has-bg-image" style="background-color: #f5f5f5;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1 class="text-center">{{edit ? 'Editar servicio:' : 'Crear servicio:'}}</h1>
+
+                <mat-horizontal-stepper [linear]="false" (selectionChange)="onChangeTab($event)">
+                    <mat-step [stepControl]="firstForm">
+                        <form name="firstForm">
+                            <br>
+                            <label for="title">Título *</label>
+                            <input id="title" autofocus placeholder="Escribe el título" name="title" type="text"
+                                   [(ngModel)]="service.title"
+                                   [formControl]="firstForm.controls['title']"
+                                   required>
+                            <label for="subtitle">Slogan *</label>
+                            <input id="subtitle" autofocus placeholder="Escribe el subtítulo" name="subtitle"
+                                   type="text"
+                                   [(ngModel)]="service.subtitle"
+                                   [formControl]="firstForm.controls['subtitle']"
+                                   required>                            <label for="address">Dirección *</label>
+
+                            <input id="address" autofocus placeholder="Escribe tu dirección" name="address" type="text"
+                                   [(ngModel)]="service.address"
+                                   [formControl]="firstForm.controls['address']"
+                                   required>
+                            <label for="phone">Teléfono *</label>
+                            <input id="phone" autofocus placeholder="Escribe tu teléfono" name="phone" type="text"
+                                   [(ngModel)]="service.phone"
+                                   [formControl]="firstForm.controls['phone']"
+                                   required>
+
+                            <label for="whatsapp">Teléfono tiene WhatsApp</label>
+                           <mat-checkbox id="whatsapp"  name="whatsapp"
+                                          [(ngModel)]="whatsapp"
+
+                                         (click)="changWhatsapp()"
+                                         required >
+
+
+</mat-checkbox>
+                            <br>
+                            <label for="description">Descripción *</label>
+                            <textarea id="description" placeholder="Descripción del servicio" name="description"
+                                      [formControl]="firstForm.controls['description']"
+                                      [(ngModel)]="service.description" required minlength="250"></textarea>
+                            <label for="cities">Ciudades *</label>
+                            <select id="cities" name="cities" class="custom-select" multiple="true"
+                                    required>
+                                <option *ngFor="let city of cities" value="{{city.id}}">{{city.title}}</option>
+                            </select>
+                            <div style="height: 15px;"></div>
+                            <div *ngIf="!edit"><label for="categ">Categoria *</label>
+                                <select id="categ" name="categ" class="custom-select"
+                                        style="margin-bottom: 15px;"
+                                        required>
+                                    <option *ngFor="let category of categ" value="{{category.id}}">{{category.title}}
+                                    </option>
+                                </select>
+
+                                <label for="categories">Sub-Categoria *</label>
+                                <select id="categories" name="categories" class="custom-select" multiple="true"
+                                        required>
+                                    <option *ngFor="let category of categories" value="{{category.id}}">
+                                        {{category.title}}
+                                    </option>
+                                </select></div>
+                            <div *ngIf="edit"><label for="categedit">Categoria *</label>
+                                <select id="categedit" name="categedit" class="custom-select"
+                                        style="margin-bottom: 15px;"
+                                        required>
+                                    <option *ngFor="let category of categ" value="{{category.id}}">{{category.title}}
+                                    </option>
+                                </select>
+                                <label for="categoriesedit">Categorias *</label>
+                                <select id="categoriesedit" name="categoriesedit" class="custom-select"
+                                        multiple="true"
+                                        required>
+                                    <option *ngFor="let category of categories" value="{{category.id}}">
+                                        {{category.title}}
+                                    </option>
+                                </select></div>
+                            <div style="height: 50px;"></div>
+                            <!--<div class="">-->
+                            <!--<div style="width: 133px; height: 122.891px;">-->
+                            <!--<img name="preview" class="d-flex align-self-center" width="115"-->
+                            <!--[src]="previewvalue" alt=""-->
+                            <!--style="border: 1px solid #bcbcbc; padding: 5px; width: 90%; height: 100%;"-->
+                            <!--appImageZoom>-->
+                            <!--</div>-->
+                            <!--<label class="fileContainer cp">-->
+                            <!--<button mat-raised-button color="primary">-->
+                            <!--<mat-icon>camera</mat-icon>-->
+                            <!--Subir foto-->
+                            <!--</button>-->
+                            <!--<input type="file" class="" name="icon" size="20"-->
+                            <!--(change)="onFileChange($event)" #fileInput/>-->
+                            <!--</label>-->
+                            <!--</div>-->
+                            <div style="text-align: right">
+                                <button [disabled]="" mat-raised-button color="primary" matStepperNext>
+                                    Siguiente paso
+                                    <mat-icon>navigate_next</mat-icon>
+                                </button>
+                            </div>
+                        </form>
+                    </mat-step>
+
+                    <mat-step>
+                        <br>
+                        <label *ngIf="moreImage" class="fileContainer cp">
+                            <button mat-raised-button color="primary">
+                                <mat-icon>camera</mat-icon>
+                                Subir foto
+                            </button>
+                            <input type="file" class="" name="icon" size="20"
+                                   (change)="onFotoChange($event)"/>
+                        </label>
+                        <br/>
+
+                        <mat-grid-list cols="2" class="mat-images hidden-lg hidden-md" rowHeight="140px">
+                            <mat-grid-tile *ngFor="let prev of previews; let pos = index;" class="text-center">
+                                <div class="mat-content text-center" style="position: relative;">
+                                    <img [src]="prev.src"
+                                         alt=""
+                                         style="border: 1px solid #bcbcbc; padding: 5px; width: 120px; height: 100% !important;"
+                                         appImageZoom>
+                                    <button *ngIf="prev.position" (click)="deleteImage(pos)"
+                                            class="delete-image tc-white bc-red"
+                                            mat-icon-button style="z-index: 1000;">
+                                        <mat-icon>clear</mat-icon>
+                                    </button>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <mat-grid-list cols="2" class="mat-images hidden-xs hidden-sm" rowHeight="300px">
+                            <mat-grid-tile *ngFor="let prev of previews; let pos = index;" class="text-center">
+                                <div class="mat-content text-center" style="position: relative;">
+                                    <img [src]="prev.src"
+                                         alt=""
+                                         style="border: 1px solid #bcbcbc; padding: 5px; max-width: 300px; height: 100% !important;"
+                                         appImageZoom>
+                                    <button *ngIf="prev.position" (click)="deleteImage(pos)"
+                                            class="delete-image tc-white bc-red"
+                                            mat-icon-button style="z-index: 1000;">
+                                        <mat-icon>clear</mat-icon>
+                                    </button>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <br>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="pull-left hidden-xs hidden-sm" mat-raised-button color="primary"
+                                        matStepperPrevious>
+                                    <mat-icon>navigate_before</mat-icon>
+                                    Paso anterior
+                                </button>
+                                <button class="pull-left hidden-md hidden-lg" mat-raised-button color="primary"
+                                        matStepperPrevious>
+                                    <mat-icon>navigate_before</mat-icon>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button class="hidden-xs hidden-sm pull-right" mat-raised-button color="primary"
+                                        matStepperNext>
+                                    Siguiente paso
+                                    <mat-icon>navigate_next</mat-icon>
+                                </button>
+                                <button class="hidden-md hidden-lg pull-right" mat-raised-button color="primary"
+                                        matStepperNext>
+                                    <mat-icon>navigate_next</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                    </mat-step>
+
+                    <mat-step>
+                        <br>
+                        <label for="other_phone">Teléfono adicional</label>
+                        <input id="other_phone" placeholder="Escriba un teléfono adicional" name="other_phone"
+                               type="text"
+                               [(ngModel)]="service.other_phone">
+
+                        <label for="email">Correo electrónico</label>
+                        <input id="email" placeholder="Escriba su email" name="email" type="email"
+                               [(ngModel)]="service.email">
+
+                        <label for="url">Dirección web</label>
+                        <input id="url" placeholder="Escriba su dirección web" name="url" type="url"
+                               [(ngModel)]="service.url">
+                        <br>
+                        <div class="row">
+                            <button class="pull-left col-xs-12" mat-raised-button color="primary"
+                                    (click)="timesDialog()">
+                                Gestión de horarios
+                            </button>
+                        </div>
+                        <br><br>
+                        <!--<h5 class="tc-blue">Días de atención</h5>-->
+                        <!--<hr class="bc-grei">-->
+                        <!--&lt;!&ndash;<mat-checkbox color="primary" class="example-margin col-4" *ngFor="let day of week_days; let pos = index;"&ndash;&gt;-->
+                        <!--&lt;!&ndash;[(ngModel)]="service.week_days[pos]" value="{{pos}}" name="week_days">{{day.title}}&ndash;&gt;-->
+                        <!--&lt;!&ndash;</mat-checkbox>&ndash;&gt;-->
+                        <!--<br>-->
+                        <!--<br>-->
+
+                        <!--<h5 class="tc-blue">Horario de atención</h5>-->
+                        <!--<hr class="bc-grei">-->
+                        <!--<mat-form-field>-->
+                        <!--<input matInput placeholder="Desde" name="start_time"-->
+                        <!--[(ngModel)]="service.start_time">-->
+                        <!--</mat-form-field>-->
+                        <!--<mat-form-field>-->
+                        <!--<input matInput placeholder="Hasta" name="end_time"-->
+                        <!--[(ngModel)]="service.end_time">-->
+                        <!--</mat-form-field>-->
+                        <!--<br>-->
+
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="hidden-xs hidden-sm pull-left" mat-raised-button color="primary"
+                                        matStepperPrevious>
+                                    <mat-icon>navigate_before</mat-icon>
+                                    Paso anterior
+                                </button>
+                                <button class="hidden-md hidden-lg pull-left" mat-raised-button color="primary"
+                                        matStepperPrevious>
+                                    <mat-icon>navigate_before</mat-icon>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button class="hidden-xs hidden-sm pull-right" mat-raised-button color="primary"
+                                        matStepperNext>
+                                    Siguiente paso
+                                    <mat-icon>navigate_next</mat-icon>
+                                </button>
+                                <button class="hidden-md hidden-lg pull-right" mat-raised-button color="primary"
+                                        matStepperNext>
+                                    <mat-icon>navigate_next</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                    </mat-step>
+
+                    <mat-step>
+                        <br>
+                        <form (ngSubmit)="addPosition()" [formGroup]="positionsForm">
+                            <!--<mat-form-field>-->
+                            <!--<input matInput placeholder="Nombre ubicación" name="positiontitle"-->
+                            <!--[(ngModel)]="positiontitle"-->
+                            <!--[formControl]="positionsForm.controls['positiontitle']"-->
+                            <!--minlength="1">-->
+                            <!--<mat-error *ngIf="positionsForm.controls['positiontitle'].invalid">-->
+                            <!--{{getErrorMessage()}}-->
+                            <!--</mat-error>-->
+                            <!--</mat-form-field>-->
+                            <label for="positiontitle">Nombre ubicación *</label>
+                            <input id="positiontitle" name="positiontitle" type="text"
+                                   [(ngModel)]="positiontitle"
+                                   [formControl]="positionsForm.controls['positiontitle']" minlength="1"
+                                   required>
+                            <div #map id="map"></div>
+                            <br>
+                            <button mat-raised-button color="primary"
+                                    [disabled]="positionsForm.controls['positiontitle'].invalid || positionsForm.controls['positiontitle'].pristine || !flagPosition"
+                                    class="col-12">Agregar posiciones
+                            </button>
+                        </form>
+                        <br><br>
+
+                        <h5 *ngIf="positions.length !== 0" class="tc-blue">Mis ubicaciones</h5>
+
+                        <div *ngFor="let currentposition of positions; let pos = index">
+                            <hr class="bc-grei" style="margin-bottom: 0.5rem; margin-top: 0.5rem;">
+                            <mat-grid-list cols="12" class="mat-position" rowHeight="25px">
+                                <mat-grid-tile [colspan]="10" [rowspan]="2" class="izq">
+                                    <div>
+                                        <mat-icon style="position: absolute;" class="tc-blue md-3 md-40">location_on
+                                        </mat-icon>
+                                    </div>
+                                    <div>
+                                        <h6 class="tc-blue mb-0" style="margin-left: 45px;">
+                                            {{currentposition.title}}</h6>
+                                    </div>
+                                    <div>
+                                        <p class="tc-grei mb-0" style="margin-left: 45px;">
+                                            {{currentposition.latitude}};{{currentposition.longitude}}</p>
+                                    </div>
+                                </mat-grid-tile>
+                                <mat-grid-tile class="comment-date" [colspan]="2" [rowspan]="1">
+                                    <button (click)="deletePosition(pos)"
+                                            class="delete-position tc-white bc-red pull-right"
+                                            mat-icon-button style="z-index: 1000;">
+                                        <mat-icon>clear</mat-icon>
+                                    </button>
+                                </mat-grid-tile>
+                                <mat-grid-tile class="comment-date" [colspan]="2" [rowspan]="1">
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+                        <br>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="hidden-xs hidden-sm pull-left" mat-raised-button color="primary"
+                                        matStepperPrevious>
+                                    <mat-icon>navigate_before</mat-icon>
+                                    Paso anterior
+                                </button>
+                                <button class="hidden-md hidden-lg pull-left" mat-raised-button color="primary"
+                                        matStepperPrevious>
+                                    <mat-icon>navigate_before</mat-icon>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button class="hidden-xs hidden-sm pull-right" mat-raised-button color="primary"
+                                        (click)="finishFunction()"
+                                        [disabled]="service.title?.length === 0 || service.subtitle?.length === 0 ||
+                                                    service.address?.length === 0 || service.phone?.length === 0 ||
+                                                    service.description?.length === 0 || service.categories?.length === 0 ||
+                                                    service.cities?.length === 0">
+                                    Completar
+                                    <mat-icon>done</mat-icon>
+                                </button>
+                                <button class="hidden-md hidden-lg pull-right" mat-raised-button
+                                        (click)="finishFunction()" color="primary"
+                                        [disabled]="service.title?.length === 0 || service.subtitle?.length === 0 ||
+                                                    service.address?.length === 0 || service.phone?.length === 0 ||
+                                                    service.description?.length === 0 || service.categories?.length === 0 ||
+                                                    service.cities?.length === 0">
+                                    <mat-icon>done</mat-icon>
+                                </button>
+                                <div *ngIf="loading" class="pull-right" style="margin-right: 10px; margin-top: 5px;">
+                                    <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                                         alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </mat-step>
+                </mat-horizontal-stepper>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,119 @@
+<div class="showservices main-content content-business has-bg-image" data-bg-color="f5f5f5" style="background-color: #f5f5f5;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <div class="sidebar-categories">
+                        <h6>Categorias:</h6>
+                        <ul>
+                            <!--<li>-->
+                            <!--<input type="checkbox" [checked]="allCat" (change)="allCat = !allCat">-->
+                            <!--<span class="title" style="max-width: 70%;">{{allCat ? 'Desmarcar todas' : 'Marcar todas'}}</span>-->
+                            <!--</li>-->
+                            <li *ngFor="let category of categories">
+                                <input type="checkbox" [checked]="allCat" id="{{category.id}}"
+                                       (change)="onCheckCategory(category.id)">
+                                <span class="title" style="max-width: 70%;">{{category.title}}</span>
+                                <span class="count">{{category.servicesCount}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-subcategories">
+                        <h6>Subcategorias:</h6>
+                        <ul>
+                            <!--<li *ngIf="listSubcategories?.length > 0">-->
+                            <!--<input type="checkbox" [checked]="allSub" (change)="changeAllSub()">-->
+                            <!--<span class="title" style="max-width: 70%;">{{allSub ? 'Desmarcar todas' : 'Marcar todas'}}</span>-->
+                            <!--</li>-->
+                            <li *ngFor="let subcategory of listSubcategories">
+                                <input class="subcategories" type="checkbox" id="{{subcategory.id}}">
+                                <span class="title" style="max-width: 70%;">{{subcategory.title}}</span>
+                                <span class="count">{{subcategory.servicesCount}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-categories">
+                        <h6>Ciudades:</h6>
+                        <ul>
+                            <!--<li *ngIf="cities?.length > 0">-->
+                            <!--<input type="checkbox" [checked]="allCit" (change)="changeAllCit()">-->
+                            <!--<span class="title" style="max-width: 70%;">{{allCit ? 'Desmarcar todas' : 'Marcar todas'}}</span>-->
+                            <!--</li>-->
+                            <li *ngFor="let city of cities">
+                                <input type="checkbox" class="cities" id="{{city.id}}">
+                                <span class="title" style="max-width: 70%;">{{city.title}}</span>
+                                <span class="count">{{city.servicesCount}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-scrollbars">
+                        <h6>Distancia:</h6>
+                        <!--<div class="slider-range-container">-->
+                        <!--<div class="slider-range" data-min="1" data-max="50" data-step="1" data-default-min="1"-->
+                        <!--data-default-max="50" data-currency="&nbsp;"></div>-->
+                        <!--<div class="clearfix">-->
+                        <!--<input type="text" class="range-from" value="1">-->
+                        <!--<input type="text" class="range-to" value="50">-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <div class="field custom-select-box">
+                            <select id="distance" name="distance" class="custom-select" data-placeholder="Distancia">
+                                <option value="5">5 km</option>
+                                <option value="10">10 km</option>
+                                <option value="15">15 km</option>
+                                <option value="20">20 km</option>
+                                <option value="25">25 km</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="sidebar-button">
+                        <button class="btn-medium btn-primary full-width" (click)="filter()">Filtrar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="header-listing">
+                    <ul class="listing-views">
+                        <li class="active view-type" data-type="listing-3" style="cursor: pointer"><a href=""><i
+                                class="fa fa-th"></i></a>
+                        </li>
+                        <!--<li class="view-type" data-type="listing-2" style="cursor: pointer"><a href=""><i-->
+                                <!--class="fa fa-list"></i></a></li>-->
+                    </ul>
+                </div>
+
+                <app-services [services]=services></app-services>
+
+            </div>
+
+            <!--<div class="col-md-9 col-md-offset-3 text-center" style="margin-top: 30px;">-->
+                <!--<ul class="pagination">-->
+                    <!--<li><a href="#."><i class="fa fa-angle-left"></i></a></li>-->
+                    <!--<li><a href="#.">1</a></li>-->
+
+
+
+                    <!--<li class="current"><a href="#.">2</a></li>-->
+                    <!--<li><a href="#.">3</a></li>-->
+                    <!--<li><a href="#.">4</a></li>-->
+                    <!--<li><a href="#.">3</a></li>-->
+                    <!--<li><a href="#.">5</a></li>-->
+                    <!--<li><a href="#.">6</a></li>-->
+                    <!--<li><a href="#.">7</a></li>-->
+                    <!--<li><a href="#.">8</a></li>-->
+                    <!--<li><a href="#.">9</a></li>-->
+                    <!--<li><a href="#.">10</a></li>-->
+                    <!--<li><a href="#.">11</a></li>-->
+                    <!--<li><a href="#">12</a></li>-->
+                    <!--<li><a href="#">13</a></li>-->
+                    <!--<li><a href="#."><i class="fa fa-angle-right"></i></a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+
+
+
+

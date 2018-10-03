@@ -1,0 +1,193 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+    <ion-buttons left>
+      <button (click)="backToHome()" ion-button icon-only color="royal">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title text-center>
+      <img alt="logo" height="40" src="assets/imgs/logo.png">
+    </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <h4 class="azul-claro">{{edit ? 'Editar Servicio': 'Crear Servicio' }}
+    <small class="crear-gris">Datos iniciales</small>
+  </h4>
+
+  <div class="progress">
+    <div class="circle active">
+      <span class="label">1</span>
+    </div>
+    <span class="bar  "></span>
+    <div class="circle">
+      <span class="label">2</span>
+    </div>
+    <span class="bar "></span>
+    <div class="circle">
+      <span class="label">3</span>
+    </div>
+    <span class="bar"></span>
+    <div class="circle">
+      <span class="label">4</span>
+    </div>
+  </div>
+  <hr class="hr-separador">
+
+  <form #formu="ngForm">
+    <ion-item>
+      <ion-label stacked>Título
+        <span class="requerido">
+          <sup>*</sup>
+        </span>
+      </ion-label>
+      <ion-input name="title" maxlength="100" [(ngModel)]="service.title" placeholder="100 caracteres máximo" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Slogan
+        <span class="requerido">
+          <sup>*</sup>
+        </span>
+      </ion-label>
+      <ion-input name="subtitle" maxlength="50" [(ngModel)]="service.subtitle" placeholder="50 caracteres máximo" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Descripción
+        <span class="requerido">
+          <sup>*</sup>
+        </span>
+      </ion-label>
+      <ion-textarea row="5" name="description" maxlength="200" [(ngModel)]="service.description" placeholder="200 caracteres máximo"
+        required></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Dirección
+        <span class="requerido">
+          <sup>*</sup>
+        </span>
+      </ion-label>
+      <ion-input name="address" maxlength="200" [(ngModel)]="service.address" #Saddress="ngModel" placeholder="200 caracteres máximo"
+        required></ion-input>
+
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Teléfono
+        <span class="requerido">
+          <sup>*</sup>
+        </span>
+      </ion-label>
+      <ion-input required type="tel" maxlength="15" name="phone" [(ngModel)]="service.phone" #Sphone="ngModel" placeholder="15 caracteres máximo"
+        tel></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Teléfono tiene WhatsApp
+        <ion-icon name="logo-whatsapp"></ion-icon>
+      </ion-label>
+      <ion-checkbox color="secondary" name="whatsapp" [(ngModel)]="service.whatsapp" (ionChange)="whatsappClicked()" #whatsapp="ngModel"></ion-checkbox>
+    </ion-item>
+
+    <ion-label class="azul-claro label-centro" text-center>Ubicación</ion-label>
+
+    <ion-item>
+      <ion-label>Ciudades
+        <span class="requerido">
+          <sup>*</sup>
+        </span>
+      </ion-label>
+      <ion-select style="padding: 0 !important;" required multiple="true" name="cities" [(ngModel)]="service.cities" placeholder="Selecciona la ciudad">
+        <ion-option *ngFor="let c of cities" [value]="c.id">{{c.title}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item no-lines>
+      <ion-label>Todo el país</ion-label>
+      <ion-checkbox name="allCities" [(ngModel)]="allCities" (ionChange)="allClickedCities()" color="dark"></ion-checkbox>
+    </ion-item>
+
+    <ion-item hidden>
+      <ion-select okText="" cancelText="" required #C  name="category" [(ngModel)]="category" placeholder="Selecciona la categoria">
+        <ion-option *ngFor="let c of categories" (ionSelect)="onChangeCategory(c.id)" [value]="c.id">{{c.title}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item hidden>
+      <ion-select okText="Ok" cancelText="Atras" (ionCancel)="onCancel()" #subCategoriesS required multiple="true" name="subCategories" [(ngModel)]="service.categories"
+        placeholder="Selecciona la subcategoria">
+        <ion-option *ngFor="let c of subCategories" [value]="c.id">{{c.title}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-row text-wrap>
+      <button outline block ion-button (click)="establecerCategoria()">Establecer Categoria</button>
+      <ion-col col-6>
+        <ion-label >Categorías</ion-label>
+        <div *ngFor="let cat of categories">
+          <p *ngIf="cat.id==category">{{cat.title}}</p>
+        </div>
+      </ion-col>
+      <ion-col col-6>
+        <ion-label>Sub-Categorías</ion-label>
+        <div *ngFor="let subId of service.categories">
+          <p>{{textoSubcategoria(subId)}}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+
+    <!--<ion-item>-->
+    <!--<ion-label stacked>Pais<span class="requerido"><sup>*</sup></span></ion-label>-->
+    <!--<ion-select placeholder="Seleccione" #C (ionChange)="onChangeCountry(C.value)" name="country_id" [(ngModel)]="user.country_id" required>-->
+    <!--<ion-option *ngFor="let item of paises" [value]="item.country_id">{{item.nombre}}</ion-option>-->
+    <!--</ion-select>-->
+    <!--</ion-item>-->
+    <!--<ion-item>-->
+    <!--<ion-label stacked>Ciudad<span class="requerido"><sup>*</sup></span></ion-label>-->
+    <!--<ion-select placeholder="Seleccione" [disabled]="!user.country_id" name="province_id" [(ngModel)]="user.province_id" required>-->
+    <!--<ion-option *ngFor="let item of provicias" [value]="item.provincia_id">{{item.nombre}}</ion-option>-->
+    <!--</ion-select>-->
+    <!--</ion-item>-->
+
+    <!--<ion-grid>-->
+    <!--<ion-row align-items-center>-->
+    <!--<ion-col col-6>-->
+
+    <!--<img (tap)="viewImg(preview)" src="{{preview}}"/>-->
+    <!--</ion-col>-->
+    <!--<ion-col col-6>-->
+    <!--<button (click)="presentActionSheet()" padding block ion-button icon-left>-->
+    <!--<ion-icon name="cloud-upload"></ion-icon>-->
+    <!--Subir foto-->
+    <!--</button>-->
+    <!--</ion-col>-->
+
+    <!--</ion-row>-->
+    <!--</ion-grid>-->
+    <!--<ion-item>-->
+    <!--<img (tap)="viewImg()" style="max-width: 50%;" src="{{preview}}" />-->
+    <!--<button ion-button (tap)="presentActionSheet()">Subir Foto</button>-->
+    <!--&lt;!&ndash; <img style="max-width: 50%;" src="{{preview}}" (tap)="presentActionSheet()" alt="Ionic File" />-->
+    <!--<button  ion-button (tap)="uploadFile()">Subir Foto</button> &ndash;&gt;-->
+    <!--</ion-item>-->
+
+  </form>
+  <ion-grid>
+    <ion-row>
+
+      <ion-col col-6 offset-6>
+        <!--[disabled]="!f.form.valid"-->
+        <button block color="azul-oscuro" (tap)="goToCreate2()" ion-button icon-start>
+
+          <ion-icon name="arrow-round-forward"></ion-icon>
+          Siguiente
+
+        </button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+</ion-content>s

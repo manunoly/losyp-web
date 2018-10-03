@@ -1,0 +1,59 @@
+<ion-header>
+
+  <app-header [showInput]="false" [showSearch]="false"></app-header>
+
+</ion-header>
+
+
+<ion-content padding>
+  <serv-up-info [passedService]="service" [cantComentarios]="cant_c" (rateService)="rateService($event)"></serv-up-info>
+  <!--<div *ngIf="currentUser">-->
+  <!--<ion-label text-center color="azul-claro">-->
+  <!--Escribe tu comentario-->
+  <!--</ion-label>-->
+  <!--<ion-textarea name="comentario" [(ngModel)]="comentario" #com="ngModel" rows="3" placeholder="Escribe tu comentario"></ion-textarea>-->
+  <!--<button (click)="comentar()" [disabled]="!comentario" class="btn-text-left" text-left color="azul-claro" ion-button block margin-bottom="1">-->
+  <!--<ion-icon class="fs-30" name="chatboxes" ></ion-icon>-->
+  <!--&nbsp;Comentar-->
+  <!--</button>-->
+  <!--</div>-->
+  <ion-label text-center color="azul-claro">
+    Comentarios anteriores
+  </ion-label>
+
+  <ion-list>
+    <ion-item *ngFor="let comment of comentarios">
+      <ion-grid no-padding>
+        <ion-row align-items-start>
+          <ion-col col-10>
+            <p class="azul-claro">{{comment.user.username}}</p>
+            <p class="azul-claro"> {{comment.created.date | date:'yyyy-M-d'}} <ion-rating  [fsize]="'fs-15'" [readOnly]="true" [numStars]="5" [value]="comment.rate"></ion-rating> </p>
+          </ion-col>
+          <ion-col col-2>
+            <p float-right>
+              <!-- <button *ngIf="currentUser" (click)="showPromptDenuncia(comment.id)" ion-button icon-only color="danger">
+                  <ion-icon class="fs-30"  name="more" ></ion-icon>
+                </button> -->
+              <!--<button style="height: 10px;font-size: 9px;" *ngIf="currentUser" (click)="presentPopover($event)" ion-button color="danger" small icon-only>-->
+              <ion-icon margin-right="5px" *ngIf="currentUser" (click)="presentPopover($event)" class="fs-30" name="more"></ion-icon>
+              <!--</button>-->
+
+              <!--<span  *ngIf="currentUser.email == service.author.email">-->
+              <!--<button style="height: 10px;font-size: 9px;" (click)="toggleComment(comment.id,comment.hided)" ion-button icon-only-->
+              <!--[color]="comment.hided ? 'danger':'secondary'">-->
+              <ion-icon [color]="comment.hided ? 'danger':'secondary'" (click)="toggleComment(comment.id,comment.hided)" *ngIf="currentUser.email == service.author.email && service.professional === 1" class="fs-30" [name]="comment.hided ? 'close':'checkmark'"></ion-icon>
+              <!--</button>-->
+              <!--</span>-->
+
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <p text-wrap>{{comment.comment}}</p>
+
+    </ion-item>
+
+  </ion-list>
+
+
+</ion-content>

@@ -1,0 +1,32 @@
+page-services {
+  .item-block .item-inner {
+    border-bottom: none !important;
+  }
+  .serv-title {
+    color: #0092b6;
+    // border-bottom: 1px solid #dedede
+  }
+  .pagado {
+    .input-wrapper {
+      border: 2px solid #009045;
+      border-radius: 3px;
+      margin-bottom: 5px;
+    }
+  }
+  .no_pago {
+    .input-wrapper {
+      border: 2px solid #005790;
+      border-radius: 3px;
+      margin-bottom: 5px;
+    }
+  }
+  ion-select {
+    max-width: 100%;
+  }
+  ion-chip ion-icon {
+    font-size: 24px;
+  }
+  ion-chip ion-label {
+    margin: 0 10px 0 0 !important;
+  }
+}

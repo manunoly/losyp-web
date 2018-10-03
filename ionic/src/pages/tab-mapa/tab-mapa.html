@@ -1,0 +1,21 @@
+<ion-header>
+  <app-header [home]="loggedIn" [showInput]="false" [showSearch]="false"></app-header>
+</ion-header>
+
+<ion-content>
+  <div #map id="map"></div>
+  <ion-fab center bottom >
+    <button clear block transparent>
+      Mostrando Servicios
+    </button>
+  </ion-fab>
+
+  <ion-fab class="fs-15" left bottom>
+    <button *ngIf="!loggedIn" ion-fab mini (click)="openLoginPage()">
+      <ion-icon name="person"></ion-icon>
+    </button>
+<!--     <button ion-fab mini (click)="getUserPosition()">
+      <ion-icon name="pin"></ion-icon>
+    </button> -->
+  </ion-fab>
+</ion-content>
