@@ -95,7 +95,16 @@ class Auth extends REST_Controller
         $values = json_decode($post_Val[0]);
 //        $user_agent = $this->input->get_request_header('User-Agent', FALSE);
         $email = $values->email;
-        $password = $values->password;
+        if(isset($values->password)){
+            $password = $values->password;
+        } else{
+            $password = "";
+        }
+        if(isset($values->isfacebook)){
+            $is_facebook=true;
+        } else{
+            $is_facebook= false;
+        }
         $remember = true;
         $em = $this->doctrine->em;
         $userRepo = $em->getRepository('Entities\User');
@@ -103,6 +112,21 @@ class Auth extends REST_Controller
         $users = $userRepo->findBy(array("email" => $email));
         if (count($users) > 0) {
             $user = $users[0];
+            if($is_facebook){
+                $tokenData = array(
+                    'userid' => $user->getId(),
+                    'email' => $user->getEmail(),
+                    'role' => $user->getRole()
+                );
+                $token = AUTHORIZATION::generateToken($tokenData);
+                $output["token"] = $token;
+                $output["email"] = $email;
+                $output["role"] = $user->getRole();
+                $output["name"] = $user->getName();
+                $output["loginProvider"] = "Facebook";
+                echo json_encode($output);
+                return;
+            }else{
             if ($this->ion_auth->login($email, $password, $remember)) {
                 $tokenData = array(
                     'userid' => $user->getId(),
@@ -112,16 +136,9 @@ class Auth extends REST_Controller
                 $token = AUTHORIZATION::generateToken($tokenData);
                 $output["token"] = $token;
                 $output["email"] = $email;
-                if($user->getisFacebook())
-					$output["loginProvider"] = "FACEBOOK";
-				else
-					$output["loginProvider"] = "EMAIL";
+    			$output["loginProvider"] = "Email";
                 $output["role"] = $user->getRole();
 				$output["name"] = $user->getName();
-				if($user->getisFacebook())
-					$output["loginProvider"] = "FACEBOOK";
-				else
-					$output["loginProvider"] = "EMAIL";
                 echo json_encode($output);
                 return;
             } else {
@@ -129,9 +146,42 @@ class Auth extends REST_Controller
                 echo json_encode($output);
                 return;
             }
+            }
         } else {
-            $output["error"] = "Usuario no encontrado";
-            echo json_encode($output);
+            if($is_facebook){
+
+                $additional_data = array(
+                    'name' => $values->name
+                );
+                if(isset($values->phoneid)){
+                    $additional_data["phone_id"]=$values->phoneid;
+                }
+                if(isset($values->phoneso)){
+                    $additional_data["phone_so"]=$values->phoneso;
+                }
+                $additional_data["is_facebook"]=$values->isfacebook;
+                $result = $this->ion_auth->register($email, "", $email, $additional_data);
+                if ($result) {
+                    $tokenData = array(
+                        'userid' => $result,
+                        'email' => $email,
+                        'role' => 1
+                    );
+                    $token = AUTHORIZATION::generateToken($tokenData);
+                    $output["token"] = $token;
+                    $output["email"] = $email;
+                    $output["name"] = $additional_data['name'];
+                    $output["role"] = 1;
+                    $output["loginProvider"] = "Facebook";
+                    echo json_encode($output);
+                } else {
+                    $output["error"] = "El usuario no pudo ser creado";
+                    echo json_encode($output);
+                }
+            }else {
+                $output["error"] = "Usuario no encontrado";
+                echo json_encode($output);
+            }
             return;
         }
     }
@@ -173,7 +223,10 @@ class Auth extends REST_Controller
                 $token = AUTHORIZATION::generateToken($tokenData);
                 $output["token"] = $token;
                 $output["email"] = $email;
-				$output["role"] = 1;
+                $output["role"] = 1;
+                $output["name"] = $additional_data['name'];
+                $output["loginProvider"] = "Email";
+                
 //				if($user->getisFacebook())
 //					$output["loginProvider"] = "FACEBOOK";
 //				else
