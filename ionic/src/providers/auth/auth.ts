@@ -1,3 +1,4 @@
+import { Facebook } from '@ionic-native/facebook';
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject} from 'rxjs/Rx';
@@ -42,9 +43,14 @@ export class AuthProvider {
   }
 
 // Login
-  login(user: User): Promise<any> {
-    const body = JSON.stringify({email: user.email, password: user.password});
-    return this.http.post(this.api.getbaseUrl() + 'auth/login', body)
+  login(user: User, face = false): Promise<any> {
+    let body;
+    if(face){
+      body = JSON.stringify({email: user.email, password: "", phoneid:user.phoneid, name: user.name, isfacebook: true, phoneos: user.phoneos});
+    }else{
+      body = JSON.stringify({email: user.email, password: user.password});
+    }
+    return this.http.post(this.api.getbaseUrl() + 'auth/login',body)
       .toPromise()
       .then(
         (response) => {

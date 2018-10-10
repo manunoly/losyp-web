@@ -11,9 +11,10 @@ import {User} from '../../models/user';
 import {AuthProvider} from '../../providers/auth/auth';
 import {HomePage} from '../home/home';
 import { TabPage } from '../tab/tab';
-// import { NotificacionesPushProvider } from '../../providers/notificaciones-push/notificaciones-push';
-// import { FCM } from "@ionic-native/fcm";
+import { NotificacionesPushProvider } from '../../providers/notificaciones-push/notificaciones-push';
+import { FCM } from "@ionic-native/fcm";
 // import { SignupPage } from '../signup/signup';
+import { Facebook } from '@ionic-native/facebook';
 
 @IonicPage()
 @Component({
@@ -29,8 +30,9 @@ export class LoginPage {
               public authService: AuthProvider,
               public toastCtrl: ToastController,
               public load: LoadingController,
-              // public push: NotificacionesPushProvider,
-              // public fcm: FCM,
+              public push: NotificacionesPushProvider,
+              private fb: Facebook,
+              public fcm: FCM,
               public alertCtrl: AlertController) {
     this.user = new User();
 
@@ -38,14 +40,37 @@ export class LoginPage {
   }
 
   loginFacebook(){
-    let toast = this.toastCtrl.create({
-      message: "Pronto estaremos conectados con Facebook!",
-      duration: 5000,
-      position: 'bottom',
-      showCloseButton: true,
-      closeButtonText: "Cerrar"
+    this.fb.login(['public_profile', 'email'])
+    .then(rta => {
+      if(rta.status == 'connected'){
+        this.getInfo();
+      };
+    })
+    .catch(error =>{
+      let toast = this.toastCtrl.create({
+        message: "Ha ocurrido un error conectando con Facebook!",
+        duration: 5000,
+        position: 'bottom',
+        showCloseButton: true,
+        closeButtonText: "Cerrar"
+      });
+      toast.present();
     });
-    toast.present();
+  }
+
+  getInfo(){
+    this.fb.api('/me?fields=id,name,email,first_name,picture,last_name,gender',['public_profile','email'])
+    .then(data=>{
+      this.user.phoneos = this.push.getOS();
+      this.user.name = data['name'];
+      this.user.email = data['email'];
+      this.user.password = "";
+      this.user.is_facebook = true;
+      this.doLogin(true);
+    })
+    .catch(error =>{
+      console.error( error );
+    });
   }
 
   showPrompt() {
@@ -110,17 +135,17 @@ export class LoginPage {
     prompt.present();
   }
 
-  doLogin() {
+  doLogin(face= false) {
     this.loading = this.load.create({
       content: "Autenticando..."
     });
     this.loading.present();
-    this.authService.login(this.user)
+    this.authService.login(this.user, face)
       .then(result => {
         if (result === true) {
           this.loading.dismiss();
-          // this.push.forceUpdateMovilId();
-          // this.push.subcribe();
+          this.push.checkTokenMovil();
+          this.push.subcribe();
           this.navCtrl.push(TabPage);
           //  this.navCtrl.pop();
         } else {
@@ -137,7 +162,7 @@ export class LoginPage {
       }).catch(
       (error) => {
         let toast = this.toastCtrl.create({
-          message: "No hay conexión a internet",
+          message: "Problema de conexión",
           duration: 5000,
           position: 'bottom',
           showCloseButton: true,
@@ -145,10 +170,10 @@ export class LoginPage {
         toast.present();
         this.loading.dismiss();
         // this.navCtrl.goToRoot({});
-        this.navCtrl.setRoot(HomePage, {
+        this.navCtrl.push(TabPage, {
           connetionDown: true
         });
-        this.navCtrl.pop();
+        // this.navCtrl.pop();
       }
     );
   }

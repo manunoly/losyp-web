@@ -9,4 +9,5 @@ export class User {
   id:string;
   phoneid:string;
   phoneos:string;
+  is_facebook?:boolean;
 }

@@ -66,7 +66,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import {SearchPage} from "../pages/search/search";
 import { OpenNativeSettings } from '@ionic-native/open-native-settings';
 import { Diagnostic } from '@ionic-native/diagnostic';
-// import { NotificacionesPushProvider } from '../providers/notificaciones-push/notificaciones-push';
+import { NotificacionesPushProvider } from '../providers/notificaciones-push/notificaciones-push';
+import { Facebook } from '@ionic-native/facebook';
 
 @NgModule({
   declarations: [
@@ -176,8 +177,9 @@ import { Diagnostic } from '@ionic-native/diagnostic';
     CategoryProvider,
     ServiceProvider,
     AuthProvider,
-    // NotificacionesPushProvider,
-    ApiProvider
+    NotificacionesPushProvider,
+    ApiProvider,
+    Facebook
 
     ]
 })
