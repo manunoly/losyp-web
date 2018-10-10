@@ -16,9 +16,9 @@ export class NotificacionesPushProvider {
 
   getOS(): string {
     let os = "";
-    if (this.platform.is("ios")) {
+    if (this.platform.is('ios')) {
       os = "IOS";
-    } else if (this.platform.is("android")) {
+    } else if (this.platform.is('android')) {
       os = "ANDROID";
     }
     return os;
@@ -38,6 +38,15 @@ export class NotificacionesPushProvider {
         });
       }
     });
+  }
+
+  async getTokenMovil(){
+    try {
+      let deviceID = await this.fcm.getToken();
+      return deviceID;
+    } catch (err) {
+        return "";
+    }
   }
 
   adminSubcribe() {

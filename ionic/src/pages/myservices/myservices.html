@@ -64,16 +64,30 @@ searchValue
                     <ion-icon name="clipboard"></ion-icon>
                     Editar
                   </button>
-                  <button class="fs-10" (click)="pagarServicio(serv.id,serv.tittle)" color="secondary" ion-button small block icon-left>
+                  <!-- <button class="fs-10" (click)="pagarServicio(serv.id,serv.tittle)" color="secondary" ion-button small block icon-left>
                     <ion-icon name="cash"></ion-icon>
                     Pagar
-                  </button>
+                  </button> -->
                   <button class="fs-10" (click)="delete(serv.id)" color="danger" ion-button small block icon-left>
                     <ion-icon name="close"></ion-icon>
                     Eliminar
                   </button>
                 </ion-col>
               </ion-row>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-6>
+              <button ion-button full icon-start color="primary" text-wrap>
+                <ion-icon name="paper"></ion-icon>
+                Certificar Servicio
+              </button>
+            </ion-col>
+            <ion-col col-6>
+              <button ion-button full icon-start color="secondary" text-wrap>
+                <ion-icon name="medal"></ion-icon>
+                Volverse Pro
+              </button>
             </ion-col>
           </ion-row>
         </ion-grid>
