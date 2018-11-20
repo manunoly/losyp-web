@@ -162,7 +162,7 @@ export class LoginPage {
       }).catch(
       (error) => {
         let toast = this.toastCtrl.create({
-          message: "Problema de conexión",
+          message: "Error Inesperado!",
           duration: 5000,
           position: 'bottom',
           showCloseButton: true,

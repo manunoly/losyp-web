@@ -25,6 +25,10 @@ export class MyservicesPage {
               public appCtrl: App,
               public servProv: ServiceProvider, private photoViewer: PhotoViewer,
               public load: LoadingController, private alertCtrl: AlertController) {
+                this.loadServises();
+  }
+
+  loadServises(){
     let loading = this.load.create({
       content: "Cargando..."
     });
@@ -40,6 +44,10 @@ export class MyservicesPage {
         loading.dismiss();
       }
     );
+  }
+
+  back() {
+    this.navCtrl.pop();
   }
 
   getSearchValue(value) {
@@ -68,8 +76,9 @@ export class MyservicesPage {
           text: "Si",
           handler: () => {
             this.servProv.deleteService(id).then(
-              (response) => {
-                this.services = this.services.filter(service => service.id !== id);
+              response => {
+                // this.services = this.services.filter(service => service.id !== id);
+                this.loadServises();
                   let toast = this.toastCtrl.create({
                           message: "Servicio eliminado correctamente",
                           duration: 5000,
@@ -80,8 +89,8 @@ export class MyservicesPage {
                         toast.present();
 
               }
-            ).catch(
-              (error) => {
+            ).catch(error => {
+              console.log(error);
               }
             );
           }
@@ -128,6 +137,16 @@ export class MyservicesPage {
     //   id: id,
     //   name: titulo
     // });
+  }
+  becomePro(){
+    let toast = this.toastCtrl.create({
+      message: "Próximamente te brindaremos más funciones!",
+      duration: 5000,
+      position: 'bottom',
+      showCloseButton: true,
+      closeButtonText: "Cerrar"
+    });
+    toast.present();
   }
 
   editService(serv) {

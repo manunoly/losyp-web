@@ -1408,10 +1408,10 @@ class Api extends REST_Controller
             //CARGADA LA RELACION PARA DESPUES ELIMINARLAS CON EL SERVICIO
             $em->remove($service);
             $em->flush();
-            $this->set_response("OK", REST_Controller::HTTP_OK);
+            $this->set_response(true, REST_Controller::HTTP_OK);
         }
         }else{
-            $this->set_response("OK", REST_Controller::HTTP_ACCEPTED);
+            $this->set_response("error", REST_Controller::HTTP_ACCEPTED);
         }
     }
 

@@ -18,7 +18,8 @@ import {IonicPage, PopoverController, NavController, AlertController, ModalContr
 import {
   NavParams,
   Keyboard,
-  Platform
+  Platform,
+  ViewController
 } from "ionic-angular";
 // native components
 import {SplashScreen} from '@ionic-native/splash-screen';
@@ -66,6 +67,7 @@ export class HomePage {
                 public servProv: ServiceProvider,
                 private photoViewer: PhotoViewer,
                 public keyboard: Keyboard,
+                public viewCtrl: ViewController,
                 public navParams: NavParams, public splashScreen: SplashScreen, public platform: Platform, statusBar: StatusBar,
                 // private push: NotificacionesPushProvider
     ) {
@@ -100,7 +102,12 @@ export class HomePage {
             this.navCtrl.pop();
           }
           else {
-            this.exitApp();
+           if (this.viewCtrl.isLast()){
+              this.exitApp();
+            }
+            else{
+              this.viewCtrl.dismiss();
+            }
           }
 
         });

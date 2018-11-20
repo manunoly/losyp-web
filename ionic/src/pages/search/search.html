@@ -15,8 +15,8 @@
 
 <ion-content padding>
   <div *ngIf="noFound">
-    <p>Ups! Tu búsqueda actual no muestra resultados! </p>
-    <p *ngIf="!subCategoriaTitutlo">Prueba buscar por categorías, es más fácil y divertido!</p>
+    <p> Ups! Tu búsqueda actual no muestra resultados! <img width="20" height="20" src="assets/imgs/iconsad.png"/></p>
+    <p *ngIf="!subCategoriaTitutlo">Busca por categorías, es más fácil y divertido!<img width="20" height="20" src="assets/imgs/iconhappy.png"/></p>
   </div>
   <ion-grid>
     <ion-row>
@@ -39,7 +39,7 @@
           </ion-col>
 
           <ion-col col-8 (tap)='openServicePage(serv.id,i)'>
-            <h2 class="serv-title ">{{serv.title }} </h2>
+            <h2 text-wrap class="serv-title ">{{serv.title }} </h2>
             <hr class="hr-separador">
             <ion-row>
               <ion-col col-12>

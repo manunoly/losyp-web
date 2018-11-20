@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ViewController, Platform } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController, Platform, ToastController } from 'ionic-angular';
 import { ServiceProvider } from '../../providers/service/service.service';
 import { ApiProvider } from '../../providers/api/api';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -23,6 +23,7 @@ export class ModalDenunciaPage {
   constructor( platform: Platform,
     public keyboard: Keyboard,
     public api: ApiProvider, public servProv: ServiceProvider,
+    public toastCtrl: ToastController,
     public viewCtrl: ViewController, public navParams: NavParams) {
     // platform.ready().then(() => {
     //   keyboard.show();
@@ -41,7 +42,17 @@ export class ModalDenunciaPage {
   }
   denunciar(){
     if (this.tipo== "servicio") {
-      this.servProv.denunciarService(this.id, this.denuncia)
+      this.servProv.denunciarService(this.id, this.denuncia).then(resp=>{
+        console.log(resp);
+        if(resp && resp['error']){
+          this.showMsg(resp['error']);
+        }else{
+          this.showMsg('Su denuncia ha sido enviada');
+        }
+      }).catch(error=>{
+        console.log(error);
+        this.showMsg('Ha ocurrido un error!');
+      })
     }
     else{
       this.api.reportComment(this.id, this.denuncia)
@@ -49,4 +60,12 @@ export class ModalDenunciaPage {
     this.viewCtrl.dismiss();
   }
 
+  showMsg(msg){
+    let toast = this.toastCtrl.create({
+      message: msg,
+      duration: 2000,
+      position: "bottom"
+    });
+    toast.present();
+  }
 }
