@@ -2,7 +2,8 @@ import {AfterViewChecked, AfterViewInit, Component, OnInit} from '@angular/core'
 import {AuthService} from './_services/auth.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
-
+import {HttpClient} from "@angular/common/http";
+import { ApiService } from './_services/api.service';
 
 declare const $: any;
 declare const google;
@@ -16,7 +17,7 @@ declare const google;
 export class AppComponent implements OnInit, AfterViewInit, AfterViewChecked {
     loggedIn = false;
 
-    constructor(public authServices: AuthService, private router: Router, private snackBar: MatSnackBar) {
+	constructor(public authServices: AuthService, private router: Router, private snackBar: MatSnackBar, public apiS: ApiService) {
     }
 
     ngOnInit(): void {
@@ -713,12 +714,22 @@ export class AppComponent implements OnInit, AfterViewInit, AfterViewChecked {
         this.authServices.logout();
         this.router.navigate(['']);
         this.openSnackBar('Ha cerrado la session correctamente.', 2500);
-    }
+	}
 
     openSnackBar(message: string, duration: number, action?: string) {
         this.snackBar.open(message, action, {
             duration: duration,
             horizontalPosition: 'center',
         });
-    }
+	}
+	subscribeEmail(email){
+		this.apiS.subscribeEmail(email).then(resp=>{
+			this.openSnackBar('Subscrito correctamente.', 2500);
+		}).catch(_=>{
+			this.openSnackBar('Ha ocurrido un error inesperado.', 2500);
+		});
+	}	
+	// subscribeEmail(email){
+	// 	console.log(email);
+	// }
 }

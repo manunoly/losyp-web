@@ -8,7 +8,7 @@ import {Geolocation} from "@ionic-native/geolocation";
 
 
 declare var google;
-
+ 
 @Component({
   templateUrl: "app.html"
 })

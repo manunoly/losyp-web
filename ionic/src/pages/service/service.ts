@@ -43,7 +43,8 @@ export class ServicePage {
     public popCtrl: PopoverController,
     public socialSharing: SocialSharing,
     private alertCtrl: AlertController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public api: ApiProvider
   ) {
     this.passedService = this.navParams.get("service");
     // si recibo el id del servicio
@@ -68,7 +69,7 @@ export class ServicePage {
   }
   regularShare() {
     this.socialSharing.share(
-        this.servPro.getBaseUrl()+"service/"+this.service.id,
+        this.api.shareUrl+"service/"+this.service.id,
       null,
       null,
       null

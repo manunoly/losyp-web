@@ -202,7 +202,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked, A
         if (typeof google !== 'undefined') {
             const mapOptions = {
                 center: this.latLng,
-                zoom: 8,
+                zoom: 14,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 zoomControl: true,
                 mapTypeControl: false,

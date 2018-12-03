@@ -147,8 +147,9 @@ export class WizardserviceComponent implements OnInit, AfterViewInit {
             $('#categ').select2();
             $('#categ')
                 .on('change', (e) => {
-                    const id = $('#categ').select2('val');
-
+					const id = $('#categ').select2('val');
+					$('#categories').select2("val", "");
+                    $('#categories').prop('disabled', false );
                     this.apiServices.subCategories(id).subscribe(result => {
                         this.categories = result;
                        // $('#categories').select2();
@@ -187,6 +188,7 @@ export class WizardserviceComponent implements OnInit, AfterViewInit {
                         $('#categedit').select2('val', subList[0].category.id);
                         $('#categedit')
                             .on('change', (e) => {
+                                $('#categories').prop('disabled',false);
                                 const id = $('#categedit').select2('val');
 
                                 this.apiServices.subCategories(id).subscribe(result => {

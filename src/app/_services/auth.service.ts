@@ -19,7 +19,7 @@ export class AuthService {
     // Metodo utilizado para poder utilizar el proxy en desarrollo y el baseURI en producción
     getBaseURL() {
         if (document.baseURI === 'http://localhost:4200/')
-            return 'services/';
+            return 'http://localhost/services/';
         return '';
     }
 

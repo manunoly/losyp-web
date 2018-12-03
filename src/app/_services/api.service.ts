@@ -13,11 +13,15 @@ export class ApiService {
     constructor(private http: HttpClient) {
     }
 
+	
+	subscribeEmail(email){
+		return this.http.post(this.getBaseURL() + 'api/emailsubscribe', {email: email}).toPromise();
+	  }
 
     // Metodo utilizado para poder utilizar el proxy en desarrollo y el baseURI en producción
     getBaseURL() {
         if (document.baseURI === 'http://localhost:4200/')
-            return 'services/';
+            return 'http://localhost/services/';
         return '';
     }
 
@@ -110,8 +114,8 @@ export class ApiService {
                 distance,
                 current
             }, {headers: new HttpHeaders().set('Authorization', JSON.parse(currentUser).token)}).map((response) => {
-                if (response['services']) {
-                    return response['services'];
+                if (response['data']) {
+                    return response['data'];
                 } else {
                     return new Array();
                 }
@@ -123,8 +127,8 @@ export class ApiService {
                 distance,
                 current
             }).map((response) => {
-                if (response['services']) {
-                    return response['services'];
+                if (response['data']) {
+                    return response['data'];
                 } else {
                     return new Array();
                 }

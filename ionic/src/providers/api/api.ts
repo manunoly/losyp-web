@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from 'rxjs/Observable';
-
+import 'rxjs/add/operator/toPromise';
 
 /*
   Generated class for the ApiProvider provider.
@@ -11,8 +11,9 @@ import {Observable} from 'rxjs/Observable';
 */
 @Injectable()
 export class ApiProvider {
-   private apiBaseUrl = 'http://159.89.228.158/services/';
-  //public apiBaseUrl = 'http://localhost/services/';
+  //  private apiBaseUrl = 'http://159.89.228.158/services/';
+  public apiBaseUrlShare = 'http://losyp.com/';
+  public apiBaseUrl = 'http://localhost/services/';
   // private apiBaseUrl = 'http://192.168.0.5/services/';
 
   public days: object;
@@ -29,6 +30,10 @@ export class ApiProvider {
       6: "Domingo"
     };
     this.updateUser();
+  }
+
+  get shareUrl(){
+    return this.apiBaseUrlShare;
   }
 
   updateDeviceID(deviceID, os) {

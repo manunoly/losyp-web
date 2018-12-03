@@ -11,7 +11,7 @@
                             <!--<span class="title" style="max-width: 70%;">{{allCat ? 'Desmarcar todas' : 'Marcar todas'}}</span>-->
                             <!--</li>-->
                             <li *ngFor="let category of categories">
-                                <input type="checkbox" [checked]="allCat" id="{{category.id}}"
+                                <input  class="categories"  type="checkbox" [checked]="allCat" id="{{category.id}}"
                                        (change)="onCheckCategory(category.id)">
                                 <span class="title" style="max-width: 70%;">{{category.title}}</span>
                                 <span class="count">{{category.servicesCount}}</span>
@@ -46,7 +46,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="sidebar-scrollbars">
+                    <div hidden class="sidebar-scrollbars">
                         <h6>Distancia:</h6>
                         <!--<div class="slider-range-container">-->
                         <!--<div class="slider-range" data-min="1" data-max="50" data-step="1" data-default-min="1"-->

@@ -29,7 +29,7 @@ export class ServUpInfoComponent {
 
   ngAfterViewInit() {
     this.loggedIn = this.auth.isLoggedIn();
-    let base = this.api.getbaseUrl();
+    let base = this.api.shareUrl;
     this.msg = this.msg + this.passedService.phone + "&text=Hola! estoy interesado en tu servicio "+ this.passedService.title +  ". Lo ví en LOSYP " + base +"service/"+this.passedService.id;
 
   }
