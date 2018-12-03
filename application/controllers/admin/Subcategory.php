@@ -145,6 +145,7 @@ class Subcategory extends CI_Controller {
 
 			$subcategory->setTitle($this->input->post('title', TRUE));
 			$subcategory->setCategory($em->find("\Entities\Category",$this->input->post('category_id', TRUE)));
+            $subcategory->setPriority($this->input->post('priority', TRUE));
 			$em->persist($subcategory);
 			$em->flush();
             $this->session->set_flashdata('item', array('message'=>'Se han guardado sus cambios correctamente.', 'class'=>'success', 'icon'=>'fa fa-thumbs-up', 'title'=>"<strong>Bien!:</strong>"));
@@ -173,6 +174,25 @@ class Subcategory extends CI_Controller {
 		$object->icon = $this->input->post('icon', TRUE);
 		return $object;
 	}
+	
+	# POST /subcategory/visible
+    function visible($id)
+    {
+		$em = $this->doctrine->em;
+		if (!$id) {
+			echo "ERROR PARÁMETRO";
+		} else {
+            $userRepo = $em->getRepository('Entities\Subcategory');
+            $subcategory = $userRepo->findOneBy(array("id" => $id));
+			if (!$subcategory) {
+				echo "NO EXISTE PARA MODIFICAR";
+			}
+			$subcategory->visible = !$subcategory->visible;
+			$em->persist($subcategory);
+			$em->flush();
+        }
+		redirect('admin/subcategory/index', 'refresh');
+    }
 }
 
 ?>

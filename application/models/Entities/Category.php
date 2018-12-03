@@ -24,7 +24,19 @@ class Category
      * @var string
      **/
     public $icon;
-
+	
+	/**
+     * @Column(type="integer")
+     * @var integer
+     **/    
+	public $priority;
+	
+    /**
+     * @Column(type="boolean",nullable=true)
+     * @var string
+     **/
+    public $visible;
+	
     /**
      * Bidirectional - One-To-Many (INVERSE SIDE)
      *
@@ -65,7 +77,26 @@ class Category
     {
         return $this->getTitle();
     }
-
+	
+	public function setPriority($priority)
+    {
+		$this->priority = $priority;
+        return $this;
+	}
+	public function getPriority()
+    {
+		return $this->priority;
+    }
+	public function setVisible($visible)
+    {
+		$this->visible = $visible;
+        return $this;
+	}
+	public function getVisible()
+    {
+		return $this->visible;
+    }
+	
     /**
      * Add subcategory
      *

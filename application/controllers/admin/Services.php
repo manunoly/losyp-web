@@ -333,7 +333,7 @@ class Services extends CI_Controller
             } else {
                 $userRepo = $em->getRepository('Entities\Service');
                 $service = $userRepo->findOneBy(array("id" => $id));
-                if (count($service) <= 0) {
+                if (!$service) {
                     $service = new \Entities\Service();
                 }
             }
@@ -341,6 +341,7 @@ class Services extends CI_Controller
             $service->setAthor($this->getCurrentUser());
             $service->title = $this->input->post('title', TRUE);
             $service->enabled = $this->input->post('enabled', TRUE) == 'on' ? 1 : 0;
+            $service->professional = $this->input->post('professional', TRUE) == 'on' ? 1 : 0;
             $service->subtitle = $this->input->post('subtitle', TRUE);
             $service->phone = $this->input->post('phone', TRUE);
             $service->address = $this->input->post('address', TRUE);
@@ -450,6 +451,44 @@ class Services extends CI_Controller
             redirect("admin/services/edit/$id", 'refresh');
             echo "NO ESTA REDIRECCIONANDO";
         }
+    }
+	
+    # POST /services/enabled
+    function enabled($id)
+    {
+		$em = $this->doctrine->em;
+		if (!$id) {
+			echo "ERROR PARÁMETRO";
+		} else {
+            $userRepo = $em->getRepository('Entities\Service');
+            $service = $userRepo->findOneBy(array("id" => $id));
+			if (!$service) {
+				echo "NO EXISTE PARA MODIFICAR";
+			}
+			$service->enabled = !$service->enabled;
+			$em->persist($service);
+			$em->flush();
+        }
+		redirect('admin/services/index', 'refresh');
+    }
+
+    # POST /services/professional
+    function professional($id)
+    {
+		$em = $this->doctrine->em;
+		if (!$id) {
+			echo "ERROR PARÁMETRO";
+		} else {
+            $userRepo = $em->getRepository('Entities\Service');
+            $service = $userRepo->findOneBy(array("id" => $id));
+			if (!$service) {
+				echo "NO EXISTE PARA MODIFICAR";
+			}
+			$service->professional = !$service->professional;
+			$em->persist($service);
+			$em->flush();
+        }
+		redirect('admin/services/index', 'refresh');
     }
 
     function rebuild()

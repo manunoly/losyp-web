@@ -5,7 +5,11 @@
 			<label for="title">Título:</label><br/>
 			<input type="text" required class="form-control" name="title" placeholder="Escriba el título" value="<?= isset($cities)?$cities->title:''?>"/>
 		</div>
+		<div class="form-group" style="width: 75px; height: 80px;">
+			<label for="priority">Prioridad:</label><br/>
+			<input name="priority" id="number" type="number" value="<?= isset($cities)? $cities->priority:0 ?>" min="0" max="500">
+        </div>
 		<input type="submit" value="Guardar" class="btn btn-primary"/>
-		<?= anchor('admin/cities/index','Atras','class="btn btn-link"'); ?>
+		<?= anchor('admin/cities/index','Atrás','class="btn btn-link"'); ?>
 	</form>
 

@@ -164,6 +164,7 @@ class Categories extends CI_Controller {
             }
             $data["upload_data"] = $this->upload->data();
             $category->setTitle($this->input->post('title', TRUE));
+            $category->setPriority($this->input->post('priority', TRUE));
             $em->persist($category);
             $em->flush();
             $this->session->set_flashdata('item', array('message'=>'Se han guardado sus cambios correctamente.', 'class'=>'success', 'icon'=>'fa fa-thumbs-up', 'title'=>"<strong>Bien!:</strong>"));
@@ -176,7 +177,26 @@ class Categories extends CI_Controller {
         }
 
 	}
-
+	
+    # POST /categories/visible
+    function visible($id)
+    {
+		$em = $this->doctrine->em;
+		if (!$id) {
+			echo "ERROR PARÁMETRO";
+		} else {
+            $userRepo = $em->getRepository('Entities\Category');
+            $categories = $userRepo->findOneBy(array("id" => $id));
+			if (!$categories) {
+				echo "NO EXISTE PARA MODIFICAR";
+			}
+			$categories->visible = !$categories->visible;
+			$em->persist($categories);
+			$em->flush();
+        }
+		redirect('admin/categories/index', 'refresh');
+    }
+	
 	function rebuild() {
 		$object = new Categories_model();
 		$object->id = $this->input->post('id', TRUE);

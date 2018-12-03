@@ -98,6 +98,7 @@ class Cities extends CI_Controller {
                 $city = $em->find("\Entities\City",$id);
             }
             $city->setTitle($this->input->post('title', TRUE));
+            $city->setPriority($this->input->post('priority', TRUE));
             $em->persist($city);
             $em->flush();
             $this->session->set_flashdata('item', array('message'=>'Se han guardado sus cambios correctamente.', 'class'=>'success', 'icon'=>'fa fa-thumbs-up', 'title'=>"<strong>Bien!:</strong>"));
@@ -113,6 +114,25 @@ class Cities extends CI_Controller {
 		$object->title = $this->input->post('title', TRUE);
 		return $object;
 	}
+	
+	# POST /cities/visible
+    function visible($id)
+    {
+		$em = $this->doctrine->em;
+		if (!$id) {
+			echo "ERROR PARÁMETRO";
+		} else {
+            $userRepo = $em->getRepository('Entities\City');
+            $city = $userRepo->findOneBy(array("id" => $id));
+			if (!$city) {
+				echo "NO EXISTE PARA MODIFICAR";
+			}
+			$city->visible = !$city->visible;
+			$em->persist($city);
+			$em->flush();
+        }
+		redirect('admin/cities/index', 'refresh');
+    }
 }
 
 ?>

@@ -44,7 +44,11 @@
                 ?>
             </select>
         </div>
+		<div class="form-group" style="width: 75px; height: 80px;">
+			<label for="priority">Prioridad:</label><br/>
+			<input name="priority" id="number" type="number" value="<?= isset($subcategory)? $subcategory->priority:0 ?>" min="0" max="500">
+        </div>
 		<input type="submit" value="Guardar" class="btn btn-primary"/>
-		<?= anchor('admin/subcategory/index','Atras','class="btn btn-link"'); ?>
+		<?= anchor('admin/subcategory/index','Atrás','class="btn btn-link"'); ?>
 	</form>
 

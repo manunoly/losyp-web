@@ -22,10 +22,14 @@
                                 </div>
                             </div>
                         <?php } ?>
-                        <h5 class="element-title"><?= $object->title ?></h5>
+                        <h5 class="element-title" ><?= $object->title ?></h5>
+						<a class="pull-right" href="<?= site_url('admin/services/enabled/') . $object->id ?>">
                         <i class="fa <?= $object->enabled ? 'fa-check-circle' : 'fa-circle-o' ?> pull-right"
-                           data-toggle="tooltip" data-placement="top"
-                           title="<?= $object->enabled ? 'Servicio habilitado' : 'Servicio deshabilitado' ?>"></i>
+                           data-toggle="tooltip" data-placement="top" 
+                           title="<?= $object->enabled ? 'Servicio habilitado' : 'Servicio deshabilitado' ?>"></i></a>
+						<a class="pull-right" href="<?= site_url('admin/services/professional/') . $object->id ?>">
+                        <i class="fa <?= $object->professional ? 'fa fa-star' : 'fa fa-star-o' ?> pull-right"
+                           data-toggle="tooltip" data-placement="top" title="Profesional"></i></a>
                     </div>
                     <div class="listing-inner">
                         <div class="flexslider default-slider">

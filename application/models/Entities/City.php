@@ -28,7 +28,19 @@ class City
      * @Column(type="datetime")
      **/
     protected $updated_at;
-
+	
+	/**
+     * @Column(type="integer")
+     * @var integer
+     **/    
+	public $priority;
+	
+    /**
+     * @Column(type="boolean",nullable=true)
+     * @var string
+     **/
+    public $visible;
+	
     // ...
     /**
      * Many Groups have Many Users.
@@ -42,6 +54,8 @@ class City
         $this->services = new \Doctrine\Common\Collections\ArrayCollection();
         $this->updated_at = new \DateTime("now");
         $this->created_at = new \DateTime("now");
+		$this->priority = 0;
+		$this->visible = true;
     }
 
     public function getId()
@@ -92,4 +106,22 @@ class City
         return $this->services;
     }
 
+	public function setPriority($priority)
+    {
+		$this->priority = $priority;
+        return $this;
+	}
+	public function getPriority()
+    {
+		return $this->priority;
+    }
+	public function setVisible($visible)
+    {
+		$this->visible = $visible;
+        return $this;
+	}
+	public function getVisible()
+    {
+		return $this->visible;
+    }
 }

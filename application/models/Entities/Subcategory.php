@@ -13,8 +13,6 @@ class Subcategory
      **/
     public $id;
 
-
-
     /**
      * @Column(type="string")
      * @var string
@@ -61,14 +59,27 @@ class Subcategory
      * @Column(type="datetime")
      **/
     protected $updated_at;
-
+		
+	/**
+     * @Column(type="integer")
+     * @var integer
+     **/    
+	public $priority;
+	
+    /**
+     * @Column(type="boolean",nullable=true)
+     * @var string
+     **/
+    public $visible;
+	
     public function __construct()
     {
-//        $this->services = new \Doctrine\Common\Collections\ArrayCollection();
+		//$this->services = new \Doctrine\Common\Collections\ArrayCollection();
         $this->visits =0;
         $this->created_at = new \DateTime("now");
         $this->updated_at = new \DateTime("now");
-
+		$this->priority = 0;
+		$this->visible = true;
     }
 
     public function getThumb(){
@@ -177,4 +188,22 @@ class Subcategory
         $this->visits = $visits;
     }
 
+	public function setPriority($priority)
+    {
+		$this->priority = $priority;
+        return $this;
+	}
+	public function getPriority()
+    {
+		return $this->priority;
+    }
+	public function setVisible($visible)
+    {
+		$this->visible = $visible;
+        return $this;
+	}
+	public function getVisible()
+    {
+		return $this->visible;
+    }
 }

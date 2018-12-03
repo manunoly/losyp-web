@@ -71,7 +71,7 @@
             </div>
             <!--CATEGORIAS -->
             <div class="form-group">
-                <label for="categories">Categoria *:</label><br/>
+                <label for="categories">Categoría *:</label><br/>
                 <select multiple="true" class="custom-select" name="categoriesp[]"
                         placeholder="Escoja la categoría" id="categories">
                     <?php
@@ -92,7 +92,7 @@
             </div>
             <!--SUBCATEGORIAS -->
             <div class="form-group">
-                <label for="categories">Subcategoria *:</label><br/>
+                <label for="categories">Subcategoría *:</label><br/>
                 <select multiple="true" class="custom-select" name="categories[]"
                         placeholder="Escoja la categoría" id="subcategories">
                     <?php
@@ -121,7 +121,12 @@
                         <?= isset($services) ? $services->enabled ? 'checked' : '' : 'checked' ?>>
                     <label for="enabled" style="margin-left: 25px">Habilitado</label>
                 </div>
-                <button type="button" class="btn btn-next bg-tema">Proximo</button>
+                <div class="form-group form-check pull-left">
+                    <input type="checkbox" name="professional" class="form-control form-check-input" style="margin-left: 50px; margin-top: 5px"
+                        <?= isset($services) ? $services->professional ? 'checked' : '' : 'checked' ?>>
+                    <label for="professional" style="margin-left: 155px">PRO</label>
+                </div>
+                <button type="button" class="btn btn-next bg-tema">Próximo</button>
             </div>
         </div>
         <div id="step2" class="item-step ">
@@ -151,7 +156,7 @@
             </div>
             <div class="f1-buttons">
                 <button type="button" class="btn btn-previous bg-tema">Anterior</button>
-                <button type="button" class="btn btn-next bg-tema">Proximo</button>
+                <button type="button" class="btn btn-next bg-tema">Próximo</button>
             </div>
         </div>
         <div id="step3" class="item-step ">
@@ -172,7 +177,7 @@
             </div>
             <div class="f1-buttons">
                 <button type="button" class="btn btn-previous bg-tema">Anterior</button>
-                <button type="button" class="btn btn-next bg-tema" onclick="initMap()">Proximo</button>
+                <button type="button" class="btn btn-next bg-tema" onclick="initMap()">Próximo</button>
             </div>
         </div>
         <div id="step4" class="item-step ">
@@ -208,7 +213,7 @@
             </div>
             <div class="f1-buttons">
                 <button type="button" class="btn btn-previous bg-tema">Anterior</button>
-                <button type="button" class="btn btn-next bg-tema">Proximo</button>
+                <button type="button" class="btn btn-next bg-tema">Próximo</button>
             </div>
         </div>
         <div id="step5" class="item-step ">
