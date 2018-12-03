@@ -666,7 +666,7 @@ class Ion_auth_model extends CI_Model
 	 * @return bool
 	 * @author Mathew
 	 */
-	public function change_password($identity, $old, $new)
+	public function change_password($identity, $old, $new, $fake = false)
 	{
 		$this->trigger_events('pre_change_password');
 
@@ -686,8 +686,8 @@ class Ion_auth_model extends CI_Model
 		}
 
 		$user = $query->row();
-
-		$old_password_matches = $this->hash_password_db($user->id, $old);
+		if($fake) $old_password_matches = TRUE;
+		else $old_password_matches = $this->hash_password_db($user->id, $old);
 
 		if ($old_password_matches === TRUE)
 		{

@@ -62,7 +62,7 @@ class Ion_auth
 	public function __construct()
 	{
 		$this->config->load('ion_auth', TRUE);
-		$this->load->library(array('email'));
+		$this->load->library('email');
 		$this->lang->load('ion_auth');
 		$this->load->helper(array('cookie', 'language','url'));
 
@@ -152,8 +152,8 @@ class Ion_auth
 				if (!$this->config->item('use_ci_email', 'ion_auth'))
 				{
 					$this->set_message('forgot_password_successful');
-					echo "NO MANDA EMAIL";
-					die();
+					// echo "NO MANDA EMAIL";
+					// die();
 					return $data;
 				}
 				else

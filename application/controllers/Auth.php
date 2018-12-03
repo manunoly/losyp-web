@@ -122,9 +122,10 @@ class Auth extends REST_Controller
                 $output["token"] = $token;
                 $output["email"] = $email;
                 $output["role"] = $user->getRole();
-                $output["name"] = $user->getName();
-                $output["loginProvider"] = "Facebook";
-                echo json_encode($output);
+//                $output["name"] = $user->getName();
+		$output["name"] = preg_replace('/[^A-Za-z0-9\-]/', '', $user->getName());
+              $output["loginProvider"] = "Facebook";
+                echo json_encode($output, JSON_UNESCAPED_UNICODE);
                 return;
             }else{
             if ($this->ion_auth->login($email, $password, $remember)) {
@@ -138,8 +139,10 @@ class Auth extends REST_Controller
                 $output["email"] = $email;
     			$output["loginProvider"] = "Email";
                 $output["role"] = $user->getRole();
-				$output["name"] = $user->getName();
-                echo json_encode($output);
+				$output["name"] = preg_replace('/[^A-Za-z0-9\-]/', '', $user->getName());
+//				$output["name"] = $user->getName();
+//		print_r($output);
+                echo json_encode($output, JSON_UNESCAPED_UNICODE);
                 return;
             } else {
                 $output["error"] = "La contraseña no es valida";
@@ -173,7 +176,7 @@ class Auth extends REST_Controller
                     $output["name"] = $additional_data['name'];
                     $output["role"] = 1;
                     $output["loginProvider"] = "Facebook";
-                    echo json_encode($output);
+                    echo json_encode($output, JSON_UNESCAPED_UNICODE);
                 } else {
                     $output["error"] = "El usuario no pudo ser creado";
                     echo json_encode($output);
@@ -231,7 +234,7 @@ class Auth extends REST_Controller
 //					$output["loginProvider"] = "FACEBOOK";
 //				else
 //					$output["loginProvider"] = "EMAIL";
-                echo json_encode($output);
+                echo json_encode($output, JSON_UNESCAPED_UNICODE);
             } else {
                 $output["error"] = "El usuario no pudo ser creado";
                 echo json_encode($output);
@@ -242,7 +245,7 @@ class Auth extends REST_Controller
     /**
      * Forgot password
      */
-    public function forgot_password_post()
+    public function forgot_password1_post()
     {
             $result = array();
             $identity_column = $this->config->item('identity', 'ion_auth');
@@ -260,10 +263,12 @@ class Auth extends REST_Controller
             }
             // run the forgotten password method to email an activation code to the user
             $forgotten = $this->ion_auth->forgotten_password($identity->{$this->config->item('identity', 'ion_auth')});
-
-            if ($forgotten){
+			$this->manualSendMail($this->post('identity'));
+			// print_r($forgotten);
+            if ($forgotten){ 
                 // if there were no errors
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
+				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				
                 $this->set_response($forgotten, REST_Controller::HTTP_OK);
             } else {
                 $this->session->set_flashdata('message', $this->ion_auth->errors());
@@ -354,6 +359,53 @@ class Auth extends REST_Controller
         }
     }
 
+	function generateRandomString($length = 10) {
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$charactersLength = strlen($characters);
+		$randomString = '';
+		for ($i = 0; $i < $length; $i++) {
+			$randomString .= $characters[rand(0, $charactersLength - 1)];
+		}
+		return $randomString;
+	}
+	    /**
+     * Forgot password manual 
+     */
+    public function forgot_password_post()
+    {
+		$result = array();
+		$identity_column = $this->config->item('identity', 'ion_auth');
+		$identity = $this->ion_auth->where($identity_column, $this->post('identity'))->users()->row();
+
+		if (empty($identity)) {
+			$this->ion_auth->set_error('forgot_password_email_not_found');
+			$this->session->set_flashdata('message', $this->ion_auth->errors());
+			$result["error"] =$this->ion_auth->errors();
+			$this->set_response($result, REST_Controller::HTTP_OK);
+			}
+			$newpass = $this->generateRandomString();
+            $change = $this->ion_auth->change_password($this->post('identity'), "manual", $newpass, true);
+
+            if ($change)
+            {
+				try {
+					$this->manualSendMail($this->post('identity'),"Nueva Clave", "Su nueva clave es " . $newpass);
+				} catch (Exception $e) {
+					$this->session->set_flashdata('message', "Ha ocurrido un error enviando el correo");
+					$this->set_response($this->ion_auth->messages(), REST_Controller::HTTP_OK);
+				}
+				//if the password was successfully changed
+                $this->session->set_flashdata('message', $this->ion_auth->messages());
+                $this->set_response($this->ion_auth->messages(), REST_Controller::HTTP_OK);
+            }
+            else
+            {
+                $this->session->set_flashdata('message', $this->ion_auth->errors());
+                $data["error"]=$this->ion_auth->errors();
+                $this->set_response($data, REST_Controller::HTTP_OK);
+            }
+	}
+	
     /**
      * Change password
      */
@@ -404,6 +456,30 @@ class Auth extends REST_Controller
                 $user = $em->find("Entities\User", $usuario);
                 return $user;
             }
-        }
-    }
+		}
+		
+	}
+	public function manualSendMail($mailD, $subject = "Losyp", $body = ""){
+
+		$this->load->library('email');
+		$config = array();
+		$config['protocol'] = 'smtp';
+		$config['smtp_host'] = 'smtp.googlemail.com';
+		$config['smtp_user'] = 'losypco@gmail.com';
+		$config['smtp_pass'] = 'Carlos123.';
+		$config['smtp_port'] = 465;
+		$config['mailtype'] = 'html';
+		$this->email->initialize($config);
+
+		$this->email->set_newline("\r\n");
+
+
+		$this->email->from('losypco@gmail.com', 'Losyp');
+		$this->email->to($mailD);
+
+		$this->email->subject($subject);
+		$this->email->message($body);
+
+		$this->email->send();
+	}
 }

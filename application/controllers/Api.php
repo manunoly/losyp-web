@@ -441,15 +441,18 @@ class Api extends REST_Controller
             }
             $obj->setComplaint($queja);
             $obj->setComplaintCreated(new DateTime("now"));
-            $mensaje2 = $user->notificarDenunciante($service);
+            //$mensaje2 = $user->notificarDenunciante($service);
             $mensaje = $service->notificarDenuncia();
-            $em->persist($mensaje2);
-            $em->persist($mensaje);
+			//$em->persist($mensaje2);
+			$mensaje->mensaje = $mensaje->mensaje . ' Denuncia: '. $queja;
+            $em->persist($mensaje); 
             $em->persist($obj);
             $em->flush();
             $this->load->library('send_notification');
             $this->send_notification->send($mensaje->getDestinatario()->getPhoneId(),$mensaje->getDestinatario()->getPhoneSo(),array("text"=>$mensaje->getMensaje(),"id"=>$mensaje->getId()));
+
             $service->loadRelatedData($user, null, site_url());
+
             $result["data"] = $service;
         } else {
             $result["error"] = 'Debe estar autenticado para realizar esta acción';
@@ -482,7 +485,8 @@ class Api extends REST_Controller
             }
             $obj->setComplaint($queja);
             $obj->setComplaintCreated(new DateTime("now"));
-            $mensaje = $service->notificarDenuncia();
+			$mensaje = $service->notificarDenuncia();
+			$mensaje->mensaje = $mensaje->mensaje . ' Denuncia: '. $queja;
             $em->persist($mensaje);
             $em->persist($obj);
             $em->flush();
@@ -1783,5 +1787,45 @@ class Api extends REST_Controller
 //        echo Distance($lat1, $lon1, $lat2, $lon2, "N") . " nautical miles<br>";
     }
 
+	public function emailsubscribe_post(){
+		$mailD = $this->post("email");
+		if(isset($mailD)){
+			try {
+				$this->manualSendMail("losypco@gmail.com","Subscripción", "Nueva solicitud de subscripción " . $mailD);
+				$output["result"] = true;
+				$this->set_response($output, REST_Controller::HTTP_OK);
+			} catch (Exception $e) {
+				$output["result"] = false;
+				$this->set_response($output, REST_Controller::HTTP_OK);			}
+		}else {
+			$output["result"] = false;
+			$this->set_response(false, REST_Controller::HTTP_OK);	
+		}
+		// echo $mailD;
 
+	}
+
+	public function manualSendMail($mailD, $subject = "Losyp", $body = ""){
+
+		$this->load->library('email');
+		$config = array();
+		$config['protocol'] = 'smtp';
+		$config['smtp_host'] = 'smtp.googlemail.com';
+		$config['smtp_user'] = 'losypco@gmail.com';
+		$config['smtp_pass'] = 'Carlos12d3.';
+		$config['smtp_port'] = 465;
+		$config['mailtype'] = 'html';
+		$this->email->initialize($config);
+
+		$this->email->set_newline("\r\n");
+
+
+		$this->email->from('losypco@gmail.com', 'Losyp');
+		$this->email->to($mailD);
+
+		$this->email->subject($subject);
+		$this->email->message($body);
+
+		$this->email->send();
+	}
 }

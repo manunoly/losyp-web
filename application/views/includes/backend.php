@@ -44,9 +44,7 @@
                     <?php echo $config->page->Content; ?>
                 <?php else: ?>
                     <ul class="social">
-                        <li><a href="#" class="fa fa-facebook"></a></li>
-                        <li><a href="#" class="fa fa-twitter"></a></li>
-                        <li><a href="#" class="fa fa-google-plus"></a></li>
+                        <li><a href="#" class=""></a></li>
                     </ul>
                 <?php endif; ?>
 
@@ -57,9 +55,9 @@
                     <?php } else { ?>
                         <li><a href="<?= site_url("admin/auth/logout") ?>">Salir</a></li>
                     <?php } ?>
-                    <li style="border-right: 1px solid #dbdbdb;padding-right: 5px;margin-right: 5px;"><a
+                    <!-- <li style="border-right: 1px solid #dbdbdb;padding-right: 5px;margin-right: 5px;"><a
                                 href="<?= site_url("admin/home/termsconditions") ?>">Términos y condiciones</a></li>
-                    <li><a href="<?= site_url("admin/home/help") ?>">?</a></li>
+                    <li><a href="<?= site_url("admin/home/help") ?>">?</a></li> -->
                 </ul>
 
                 <!--                <div class="language">-->
@@ -144,8 +142,8 @@
                                 <ul class="demo-menu">
                                     <li><a href="<?= site_url("admin/users") ?>">Mostrar Usuarios</a></li>
                                     <li><a href="<?= site_url("admin/users/create") ?>">Agregar Usuario</a></li>
-                                    <li><a href="<?= site_url("admin/pagesc/personalize") ?>">Personalizar</a></li>
-                                    <li><a href="<?= site_url("admin/pagesc/images") ?>">Imágenes</a></li>
+                                    <li hidden><a href="<?= site_url("admin/pagesc/personalize") ?>">Personalizar</a></li>
+                                    <li hidden><a href="<?= site_url("admin/pagesc/images") ?>">Imágenes</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -165,7 +163,7 @@
         }
     }
     ?>
-    <div class="homepage-banner has-bg-image"
+    <div hidden class="homepage-banner has-bg-image"
          data-bg-image="<?= isset($config) ? $config->banner->getImage() : site_url("/resources/img/homepage-banner.jpg") ?>">
 
         <div class="container">
@@ -403,114 +401,6 @@
         </div>
     </div>
 
-    <div class="about about-section has-bg-image" data-bg-image="<?= site_url("/resources/img/about-bg.jpg") ?>">
-        <div class="triangle"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <?php
-                    $config = null;
-                    if (isset($configRegionHome)) {
-                        foreach ($configRegionHome as $item) {
-                            if ($item->region == 'aboutUsRegion')
-                                $config = $item;
-                        }
-                    }
-                    ?>
-                    <?php if (isset($config)): ?>
-                        <?php echo $config->page->Content; ?>
-                    <?php else: ?>
-                        <h4 class="section-title text-center">About The Company</h4>
-                        <div class="uou-tabs vertical">
-                            <ul class="tabs">
-                                <li class="active"><a href="#uou-tab-1v">About Us</a></li>
-                                <li><a href="#uou-tab-2v">Our Team</a></li>
-                                <li><a href="#uou-tab-3v">Our Services</a></li>
-                            </ul>
-
-                            <div class="content">
-                                <div class="active" id="uou-tab-1v">
-                                    <div class="col-md-5">
-                                        <img src="<?= site_url("/resources/img/about-thumbnail.png") ?>" alt=""
-                                             class="img-responsive">
-                                    </div>
-                                    <div class="col-md-7">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa in placeat
-                                            voluptates omnis vel quod maiores perferendis, eaque quasi expedita,
-                                            adipisci
-                                            dolorum porro itaque quia nesciunt atque earum consequatur ex.</p>
-                                        <ul class="list-unstyled mb0">
-                                            <li>
-                                                <i class="fa fa-angle-right"></i><span>Nam nec tellus a odio tincidunt</span>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-angle-right"></i><span>Nam nec tellus a odio tincidunt</span>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-angle-right"></i><span>Nam nec tellus a odio tincidunt</span>
-                                            </li>
-                                            <li><i class="fa fa-angle-right"></i><span>Mauris in erat justo.</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div id="uou-tab-2v">
-                                    <div class="col-md-5">
-                                        <img src="<?= site_url("/resources/img/about-thumbnail.png") ?>" alt=""
-                                             class="img-responsive">
-                                    </div>
-                                    <div class="col-md-7">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa in placeat
-                                            voluptates omnis vel ddquod maiores perferendis, eaque quasi expedita,
-                                            adipisci
-                                            dolorum porro itaque quia nesciunt atque earum consequatur ex.</p>
-                                        <ul class="list-unstyled mb0">
-                                            <li>
-                                                <i class="fa fa-angle-right"></i><span>Nam nec tellus a odio tincidunt</span>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-angle-right"></i><span>Nam nec tellus a odio tincidunt</span>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-angle-right"></i><span>Nam nec tellus a odio tincidunt</span>
-                                            </li>
-                                            <li><i class="fa fa-angle-right"></i><span>Mauris in erat justo.</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div id="uou-tab-3v">
-                                    <div class="col-md-5">
-                                        <img src="<?= site_url("/resources/img/about-thumbnail.png") ?>" alt=""
-                                             class="img-responsive">
-                                    </div>
-                                    <div class="col-md-7">
-                                        <p>Lorem ipsuddm dolor sit amet, consectetur adipisicing elit. Ipsa in placeat
-                                            voluptates omnis vel quod maiores perferendis, eaque quasi expedita,
-                                            adipisci
-                                            dolorum porro itaque quia nesciunt atque earum consequatur ex.</p>
-                                        <ul class="list-unstyled mb0">
-                                            <li>
-                                                <i class="fa fa-angle-right"></i><span>Nam nec tellus a odio tincidunt</span>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-angle-right"></i><span>Nam nec tellus a odio tincidunt</span>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-angle-right"></i><span>Nam nec tellus a odio tincidunt</span>
-                                            </li>
-                                            <li><i class="fa fa-angle-right"></i><span>Mauris in erat justo.</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- end .uou-tabs -->
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="popular_listings">
         <div class="container">
             <div class="row">
@@ -649,129 +539,6 @@
         </div>
     </div>
 
-    <div class="sponsors sponsors-2 has-bg-image" data-bg-image="<?= site_url("/resources/img/banner-mission.jpg") ?>"
-         data-bg-color="00D793" data-bg-opacity=".20">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <?php
-                    $config = null;
-                    if (isset($configRegionHome)) {
-                        foreach ($configRegionHome as $item) {
-                            if ($item->region == 'sponsorsRegion')
-                                $config = $item;
-                        }
-                    }
-                    ?>
-                    <?php if (isset($config)): ?>
-                        <?php echo $config->page->Content; ?>
-                    <?php else: ?>
-                        <h3 class="section-title">Our Sponsors</h3>
-                        <div class="sponsors-slider">
-                            <div class="item"><img src="<?= site_url("/resources/img/sponsor_logo1_1.png") ?>" alt=""
-                                                   class="img-responsive"></div>
-                            <div class="item"><img src="<?= site_url("/resources/img/sponsor_logo2_2.png") ?>" alt=""
-                                                   class="img-responsive"></div>
-                            <div class="item"><img src="<?= site_url("/resources/img/sponsor_logo3_3.png") ?>" alt=""
-                                                   class="img-responsive"></div>
-                            <div class="item"><img src="<?= site_url("/resources/img/sponsor_logo4_4.png") ?>" alt=""
-                                                   class="img-responsive"></div>
-                            <div class="item"><img src="<?= site_url("/resources/img/sponsor_logo5_5.png") ?>" alt=""
-                                                   class="img-responsive"></div>
-                            <div class="item"><img src="<?= site_url("/resources/img/sponsor_logo6_6.png") ?>" alt=""
-                                                   class="img-responsive"></div>
-                            <div class="item"><img src="<?= site_url("/resources/img/sponsor_logo4_4.png") ?>" alt=""
-                                                   class="img-responsive"></div>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="uou-block-4e has-bg-image" data-bg-color="ffffff">
-        <div class="container">
-            <div class="row">
-                <?php
-                $config = null;
-                if (isset($configRegionHome)) {
-                    foreach ($configRegionHome as $item) {
-                        if ($item->region == 'preFooterRegion')
-                            $config = $item;
-                    }
-                }
-                ?>
-                <?php if (isset($config)): ?>
-                    <?php echo $config->page->Content; ?>
-                <?php else: ?>
-                    <div class="col-md-3 col-sm-6">
-                        <a href="#" class="logo"><img src="<?= site_url("/resources/img/logo.png") ?>" alt=""></a>
-
-                        <ul style="background-image: url(<?= site_url("/resources/img/footer-map-bg.png") ?>);"
-                            class="contact-info has-bg-image contain"
-                            data-bg-image="<?= site_url("/resources/img/footer-map-bg.png") ?>">
-                            <li>
-                                <i class="fa fa-map-marker"></i>
-                                <address>795 Folsom Ave, Suite 600, San Francisco, CA 94107</address>
-                            </li>
-
-                            <li>
-                                <i class="fa fa-phone"></i>
-                                <a href="tel:#">(123) 456-7890</a>
-                            </li>
-
-                            <li>
-                                <i class="fa fa-envelope"></i>
-                                <a href="mailto:#">first.last@example.com</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="col-md-3 col-sm-6">
-                        <h5>Twitter Feed</h5>
-
-                        <ul class="twitter-feed">
-                            <li>
-                                RT <a href="#">@no1son</a>: Now this <a href="#">http://t.co/TSfMW1qMAW</a> is one hell
-                                of a
-                                stunning site!!! Awesome work guys <a href="#">@AIRNAUTS</a>
-                                <a href="#" class="time">May 25</a>
-                            </li>
-
-                            <li>
-                                Check out the wordpress version of Tucson - <a href="#">http://t.co/sBlU3GbapT</a>
-                                <a href="#" class="time">May 22</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="col-md-3 col-sm-6">
-                        <h5>Photostream</h5>
-
-                        <ul class="photos-list">
-                            <li><img src="<?= site_url("/resources/img/photostream4.jpg") ?>" alt=""></li>
-                            <li><img src="<?= site_url("/resources/img/photostream6.jpg") ?>" alt=""></li>
-                            <li><img src="<?= site_url("/resources/img/photostream3.jpg") ?>" alt=""></li>
-                            <li><img src="<?= site_url("/resources/img/photostream2.jpg") ?>" alt=""></li>
-                            <li><img src="<?= site_url("/resources/img/photostream1.jpg") ?>" alt=""></li>
-                            <li><img src="<?= site_url("/resources/img/photostream.jpg") ?>" alt=""></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-md-3 col-sm-6">
-                        <h5>Newsletter</h5>
-
-                        <p>Subscribe to our newsletter to receive our latest news and updates. We do not spam.</p>
-
-                        <form class="newsletter-form" action="#">
-                            <input placeholder="Enter your email address" type="email">
-                            <input class="btn btn-primary" value="Subscribe" type="submit">
-                        </form>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
 
     <div class="uou-block-4a secondary">
         <div class="container">
@@ -788,14 +555,14 @@
                 <?php echo $config->page->Content; ?>
             <?php else: ?>
                 <ul class="social-icons">
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <!-- <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                     <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                     <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li> -->
                 </ul>
 
-                <p>Copyright © 2015 Quck Finder. All Rights reserved.</p>
+                <p>Copyright © Losyp Ecuador.</p>
             <?php endif; ?>
         </div>
     </div>
