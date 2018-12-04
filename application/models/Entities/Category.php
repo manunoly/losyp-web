@@ -3,7 +3,7 @@ namespace Entities;
 
 /**
  * @Entity
- * @Table(name="categories", options={"where": "(visible = 1)"})
+ * @Table(name="categories")
  */
 class Category
 {
