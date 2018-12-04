@@ -388,7 +388,7 @@ class Api extends REST_Controller
                 $filtered = true;
             }
         }
-        if ($current_position && $distance && isset($adsfasdf)) {
+        if ($current_position && $distance) {
 			// echo "filtro todos en distancia";
             $services = $this->filterByDistance($distance, $current_position, $filtered, $services);
             $filtered = true;

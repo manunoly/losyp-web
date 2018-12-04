@@ -140,7 +140,8 @@ class Position
 
     public function isInRange($distance, $current_position)
     {
-        //TODO CALCULAR SI ESTA EN EL RANGO
+		//TODO CALCULAR SI ESTA EN EL RANGO
+		if(!$this->service->getEnabled()) return false;
         $current_distance = $this->Distance($current_position["latitude"],$current_position["longitude"]);
         if($current_distance<=$distance){
             return true;
