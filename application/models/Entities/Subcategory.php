@@ -63,6 +63,7 @@ class Subcategory
 	/**
      * @Column(type="integer")
      * @var integer
+	 * @OrderBy({"priority" = "ASC"})
      **/    
 	public $priority;
 	

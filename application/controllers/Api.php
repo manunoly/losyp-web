@@ -18,7 +18,7 @@ class Api extends REST_Controller
         $em = $this->doctrine->em;
         $subcategoriesRepo = $em->getRepository('Entities\Subcategory');
 
-        $subcategories = $subcategoriesRepo->findBy(array(), array('visits' => 'DESC'), 10);
+        $subcategories = $subcategoriesRepo->findBy(array('visible' => TRUE), array('visits' => 'DESC'), 10);
 
         if ($subcategories) {
             $response["desc"] = "Subcategorias mas visitadas ";
@@ -37,7 +37,7 @@ class Api extends REST_Controller
     {
         $em = $this->doctrine->em;
         $morevisitsRepo = $em->getRepository('Entities\Service');
-        $morevisits = $morevisitsRepo->findBy(array(), array('visits' => 'DESC'), 3);
+        $morevisits = $morevisitsRepo->findBy(array('enabled'=>true), array('visits' => 'DESC'), 3);
 
         foreach ($morevisits as $service) {
             $service->loadRelatedData(null, null, site_url());
@@ -60,7 +60,7 @@ class Api extends REST_Controller
     {
         $em = $this->doctrine->em;
         $serviceRepo = $em->getRepository('Entities\Service');
-        $mostRecent = $serviceRepo->findBy(array(), array('created' => 'DESC'), 3);
+        $mostRecent = $serviceRepo->findBy(array('enabled'=>true), array('created' => 'DESC'), 3);
 
         foreach ($mostRecent as $service) {
             $service->loadRelatedData(null, null, site_url());
@@ -83,7 +83,7 @@ class Api extends REST_Controller
     {
         $em = $this->doctrine->em;
         $serviceRepo = $em->getRepository('Entities\Service');
-        $bestRated = $serviceRepo->findBy(array(), array('globalrate' => 'DESC'), 3);
+        $bestRated = $serviceRepo->findBy(array('enabled'=>true), array('globalrate' => 'DESC'), 3);
 
         foreach ($bestRated as $service) {
             $service->loadRelatedData(null, null, site_url());
@@ -106,7 +106,7 @@ class Api extends REST_Controller
     {
         $em = $this->doctrine->em;
         $morevisitsRepo = $em->getRepository('Entities\Service');
-        $morevisits = $morevisitsRepo->findBy(array(), array('visit_at' => 'DESC'), 4);
+        $morevisits = $morevisitsRepo->findBy(array('enabled'=>true), array('visit_at' => 'DESC'), 4);
 
         foreach ($morevisits as $service) {
             $service->loadRelatedData(null, null, site_url());
@@ -129,7 +129,7 @@ class Api extends REST_Controller
     {
         $em = $this->doctrine->em;
         $categoriesRepo = $em->getRepository('Entities\Category');
-        $categories = $categoriesRepo->findAll();
+        $categories = $categoriesRepo->findBy(array('visible'=>true), array('priority' => 'ASC'));
 
         foreach ($categories as $category) {
             $services = 0;
@@ -148,8 +148,8 @@ class Api extends REST_Controller
     public function categoriesLoaded_get()
     {
         $em = $this->doctrine->em;
-        $categoriesRepo = $em->getRepository('Entities\Category');
-        $categories = $categoriesRepo->findAll();
+		$categoriesRepo = $em->getRepository('Entities\Category');
+        $categories = $categoriesRepo->findBy(array('visible'=>true), array('priority' => 'ASC'));
 
         foreach ($categories as $category) {
             $services = 0;
@@ -176,7 +176,7 @@ class Api extends REST_Controller
     {
         $em = $this->doctrine->em;
         $subcategoriesRepo = $em->getRepository('Entities\Subcategory');
-        $subcategories = $subcategoriesRepo->findAll();
+        $subcategories = $subcategoriesRepo->findBy(array('visible'=>true), array('priority' => 'ASC'));
         foreach ($subcategories as $subcategory) {
             $subcategory->servicesCount = $subcategory->getServices()->count();
         }
@@ -191,7 +191,7 @@ class Api extends REST_Controller
     {
         $em = $this->doctrine->em;
         $citiesRepo = $em->getRepository('Entities\City');
-        $cities = $citiesRepo->findAll();
+        $cities = $citiesRepo->findBy(array('visible'=>true), array('priority' => 'ASC'));
         foreach ($cities as $city) {
             $city->servicesCount = $city->getServices()->count();
         }
@@ -205,8 +205,8 @@ class Api extends REST_Controller
     public function subcategories_get($category_id)
     {
         $em = $this->doctrine->em;
-        $subcategoriesRepo = $em->getRepository('Entities\Subcategory');
-        $subcategories = $subcategoriesRepo->findBy(array('category' => $category_id));
+		$subcategoriesRepo = $em->getRepository('Entities\Subcategory');
+        $subcategories = $subcategoriesRepo->findBy(array('category' => $category_id, 'visible'=>true), array('priority' => 'ASC'));
         $category = $em->find('Entities\Category', $category_id);
         if ($category) {
             $response["desc"] = 'Subcategorias de la categoria: ' . $category->getTitle();
@@ -256,11 +256,13 @@ class Api extends REST_Controller
         $criteria = new \Doctrine\Common\Collections\Criteria();
         //AQUI TODAS LAS EXPRESIONES POR LAS QUE SE PUEDE BUSCAR CON TEXTO
         $expresion = new \Doctrine\Common\Collections\Expr\Comparison("title", \Doctrine\Common\Collections\Expr\Comparison::CONTAINS, $query);
-        $expresion2 = new \Doctrine\Common\Collections\Expr\Comparison("subtitle", \Doctrine\Common\Collections\Expr\Comparison::CONTAINS, $query);
-//        $expresion3 = new \Doctrine\Common\Collections\Expr\Comparison("title", 'ENDS_WITH', $query);
+        // $expresion2 = new \Doctrine\Common\Collections\Expr\Comparison("subtitle", \Doctrine\Common\Collections\Expr\Comparison::CONTAINS, $query);
+        $expresion3 = new \Doctrine\Common\Collections\Expr\Comparison("enabled", \Doctrine\Common\Collections\Expr\Comparison::EQ, 1);
+		//        $expresion3 = new \Doctrine\Common\Collections\Expr\Comparison("title", 'ENDS_WITH', $query);
 
         $criteria->where($expresion);
-        $criteria->orWhere($expresion2);
+        $criteria->andwhere($expresion3);
+        // $criteria->orWhere($expresion2);
 //        $criteria->orWhere($expresion3);
 
         $respuesta = $serviceRepo->matching($criteria);
@@ -386,7 +388,8 @@ class Api extends REST_Controller
                 $filtered = true;
             }
         }
-        if ($current_position && $distance) {
+        if ($current_position && $distance && isset($adsfasdf)) {
+			// echo "filtro todos en distancia";
             $services = $this->filterByDistance($distance, $current_position, $filtered, $services);
             $filtered = true;
         }
@@ -397,7 +400,7 @@ class Api extends REST_Controller
             }else {
                 $em = $this->doctrine->em;
                 $services_repo = $em->getRepository('Entities\Service');
-                $services = $services_repo->findAll();
+                $services = $services_repo->findBy(array('enabled' => TRUE), array('visits' => 'DESC'));
             }
         }
         $services_a = array();
@@ -784,7 +787,7 @@ class Api extends REST_Controller
     {
         $em = $this->doctrine->em;
         $morevisitsRepo = $em->getRepository('Entities\Service');
-        $morevisits = $morevisitsRepo->findBy(array(), array('visits' => 'DESC'), 5);
+        $morevisits = $morevisitsRepo->findBy(array('enabled' => TRUE), array('visits' => 'DESC'), 5);
         $positions = array();
         /** @var \Entities\Service $service */
         foreach ($morevisits as $service) {
@@ -1694,7 +1697,9 @@ class Api extends REST_Controller
         $result_cities = [];
         $criteria = new \Doctrine\Common\Collections\Criteria();
         $expresion = new \Doctrine\Common\Collections\Expr\Comparison("id", \Doctrine\Common\Collections\Expr\Comparison::IN, $cities);
-        $criteria->where($expresion);
+        $expresion3 = new \Doctrine\Common\Collections\Expr\Comparison("visible", \Doctrine\Common\Collections\Expr\Comparison::EQ, 1);
+		$criteria->where($expresion);
+		$criteria->andwhere($expresion3);
         $citiesObj = $citiesRepo->matching($criteria)->toArray();
         foreach ($citiesObj as $city) {
             $services = $city->getServices()->toArray();
@@ -1721,7 +1726,10 @@ class Api extends REST_Controller
         $result_subcategories = [];
         $criteria = new \Doctrine\Common\Collections\Criteria();
         $expresion = new \Doctrine\Common\Collections\Expr\Comparison("id", \Doctrine\Common\Collections\Expr\Comparison::IN, $subcategories);
-        $criteria->where($expresion);
+        $expresion3 = new \Doctrine\Common\Collections\Expr\Comparison("visible", \Doctrine\Common\Collections\Expr\Comparison::EQ, 1);
+		
+		$criteria->where($expresion);
+		$criteria->andwhere($expresion3);
         $subcategoriesObj = $sub_repo->matching($criteria)->toArray();
         $subcatego_r = array();
         foreach ($subcategoriesObj as $subcategory) {

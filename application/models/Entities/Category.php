@@ -3,7 +3,7 @@ namespace Entities;
 
 /**
  * @Entity
- * @Table(name="categories")
+ * @Table(name="categories", options={"where": "(visible = 1)"})
  */
 class Category
 {
@@ -28,6 +28,7 @@ class Category
 	/**
      * @Column(type="integer")
      * @var integer
+	 * @OrderBy({"priority" = "ASC"})
      **/    
 	public $priority;
 	
@@ -41,6 +42,7 @@ class Category
      * Bidirectional - One-To-Many (INVERSE SIDE)
      *
      * @OneToMany(targetEntity="Subcategory", mappedBy="category")
+	 * @OrderBy({"priority" = "ASC"})
      */
     private $subcategories;
     public $subcategoriesLists;
@@ -125,10 +127,14 @@ class Category
      * Get subcategories
      *
      * @return \Doctrine\Common\Collections\Collection
+	 * @OrderBy({"priority" = "ASC"})
+	 * 
      */
     public function getSubcategories()
     {
-        return $this->subcategories;
+		return $this->subcategories->filter(function(Subcategory $subcat) {
+			return $subcat->getVisible() == 1;
+			});
     }
 
 }
