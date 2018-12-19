@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.losyp.ecuador" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.losyp.ecuador" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Losyp</name>
     <description>Losyp Buscador de Servicios</description>
-    <author email="manunoly@gmail.com">Yoidel Team + manunoly</author>
+    <author email="manunoly@gmail.com">manunoly + Yoidel Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

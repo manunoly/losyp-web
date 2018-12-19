@@ -11,9 +11,9 @@ import 'rxjs/add/operator/toPromise';
 */
 @Injectable()
 export class ApiProvider {
-  //  private apiBaseUrl = 'http://159.89.228.158/services/';
+   private apiBaseUrl = 'http://159.89.228.158/services/';
   public apiBaseUrlShare = 'http://losyp.com/';
-  public apiBaseUrl = 'http://localhost/services/';
+  // public apiBaseUrl = 'http://localhost/services/';
   // private apiBaseUrl = 'http://192.168.0.5/services/';
 
   public days: object;

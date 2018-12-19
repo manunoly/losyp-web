@@ -98,8 +98,10 @@ export class LoginPage {
 
               // start some async method
               this.authService.forgot_password(data.email).then((respose) => {
+                console.log("no dio error",respose);
+
                 let toast = this.toastCtrl.create({
-                  message: "La contraseña se a enviando a su correo",
+                  message: "La contraseña se ha enviado a su correo",
                   duration: 5000,
                   position: 'bottom',
                   showCloseButton: true,
@@ -111,8 +113,9 @@ export class LoginPage {
                 // });
               }).catch(
                 (error) => {
+                  console.log("error error",error);
                   let toast = this.toastCtrl.create({
-                    message: "No se pudo mandar contraseña",
+                    message: "No se pudo enviar la contraseña",
                     duration: 5000,
                     position: 'bottom',
                     showCloseButton: true,

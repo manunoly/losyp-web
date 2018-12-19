@@ -39,7 +39,9 @@
           </ion-col>
 
           <ion-col col-8 (tap)='openServicePage(serv.id,i)'>
-            <h2 text-wrap class="serv-title ">{{serv.title }} </h2>
+            <h2 text-wrap class="serv-title ">
+            <span style="color: #009045;" *ngIf="serv.professional == 1"> PRO </span>
+              {{serv.title }} </h2>
             <hr class="hr-separador">
             <ion-row>
               <ion-col col-12>
