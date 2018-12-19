@@ -33,6 +33,7 @@ namespace Entities {
         /**
          * @Column(type="integer", nullable=true)
          * @var int
+		 * @OrderBy({"priority" = "DESC"})
          **/
         public $professional;
 

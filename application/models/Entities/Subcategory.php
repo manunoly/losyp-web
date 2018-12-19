@@ -168,9 +168,12 @@ class Subcategory
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getServices()
+    public function getServices() 
     {
-        return $this->services;
+		// return $this->services;
+		return $this->services->filter(function(Service $servi) {
+			return $servi->getEnabled() == 1;
+			});
     }
 
     /**

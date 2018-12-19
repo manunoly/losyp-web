@@ -382,26 +382,34 @@ class Auth extends REST_Controller
 			$this->session->set_flashdata('message', $this->ion_auth->errors());
 			$result["error"] =$this->ion_auth->errors();
 			$this->set_response($result, REST_Controller::HTTP_OK);
+			return;
 			}
 			$newpass = $this->generateRandomString();
             $change = $this->ion_auth->change_password($this->post('identity'), "manual", $newpass, true);
 
-            if ($change)
+			if ($change)
             {
 				try {
-					$this->manualSendMail($this->post('identity'),"Nueva Clave", "Su nueva clave es " . $newpass);
+					$sendMail = $this->manualSendMail($this->post('identity'),"Nueva Clave", "Su nueva clave es " . $newpass);
+					if($sendMail){
+						$data["message"]= "Nueva Contraseña Enviada";
+						// $this->session->set_flashdata('message', $this->ion_auth->messages());
+						$this->set_response($data, REST_Controller::HTTP_OK);
+						}else{
+							$data["error"]= "Ha ocurrido un error enviando el correo";
+							$this->set_response($data, REST_Controller::HTTP_OK);
+						}
 				} catch (Exception $e) {
-					$this->session->set_flashdata('message', "Ha ocurrido un error enviando el correo");
-					$this->set_response($this->ion_auth->messages(), REST_Controller::HTTP_OK);
+					$data["error"]= "Ha ocurrido un error enviando el correo";
+					$this->set_response($data, REST_Controller::HTTP_OK);
+					return;
 				}
-				//if the password was successfully changed
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
-                $this->set_response($this->ion_auth->messages(), REST_Controller::HTTP_OK);
+
             }
             else
             {
                 $this->session->set_flashdata('message', $this->ion_auth->errors());
-                $data["error"]=$this->ion_auth->errors();
+                $data["error"]= "Ha ocurrido un error inesperado";
                 $this->set_response($data, REST_Controller::HTTP_OK);
             }
 	}
@@ -421,8 +429,10 @@ class Auth extends REST_Controller
             if ($change)
             {
                 //if the password was successfully changed
-                $this->session->set_flashdata('message', $this->ion_auth->messages());
-                $this->set_response($this->ion_auth->messages(), REST_Controller::HTTP_OK);
+				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				$data["message"]= $this->ion_auth->messages();
+
+                $this->set_response($data, REST_Controller::HTTP_OK);
             }
             else
             {
@@ -479,7 +489,13 @@ class Auth extends REST_Controller
 
 		$this->email->subject($subject);
 		$this->email->message($body);
-
-		$this->email->send();
+		try {
+			$this->email->send();
+			return true;
+		} catch (Exception $th) {
+			$data["error"]= "Ha ocurrido un error enviando el correo";
+			$this->set_response($data, REST_Controller::HTTP_OK);
+			die();	
+		}
 	}
 }

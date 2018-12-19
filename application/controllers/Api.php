@@ -261,7 +261,8 @@ class Api extends REST_Controller
 		//        $expresion3 = new \Doctrine\Common\Collections\Expr\Comparison("title", 'ENDS_WITH', $query);
 
         $criteria->where($expresion);
-        $criteria->andwhere($expresion3);
+		$criteria->andwhere($expresion3);
+		$criteria->orderBy(array('professional' => 'DESC'));
         // $criteria->orWhere($expresion2);
 //        $criteria->orWhere($expresion3);
 
@@ -357,7 +358,9 @@ class Api extends REST_Controller
         }
         if ($current_position && $distance) {
             $services = $this->filterByDistance($distance, $current_position, $filtered, $services);
-        }
+		}
+
+		// $result["data"] = array_merge($pro,$service);
         $result["data"] = $services;
         $this->set_response($result, REST_Controller::HTTP_OK);
     }
@@ -400,7 +403,7 @@ class Api extends REST_Controller
             }else {
                 $em = $this->doctrine->em;
                 $services_repo = $em->getRepository('Entities\Service');
-                $services = $services_repo->findBy(array('enabled' => TRUE), array('visits' => 'DESC'));
+                $services = $services_repo->findBy(array('enabled' => TRUE), array('professional' => 'DESC','visits' => 'DESC'));
             }
         }
         $services_a = array();
@@ -415,8 +418,19 @@ class Api extends REST_Controller
                     $services_a[$service->getId()] = $service;
                 }
             }
-        }
-        $result["data"] = array_values($services_a);
+		}
+		$pro = array();
+		foreach ($services_a as $key => $value) {
+			if($value->professional){
+				array_push($pro, $value);
+				unset($services_a[$key]);
+			}
+		}
+		
+		// $result["data"] = array_values($services_a);
+		$result["data"] = array_values(array_merge($pro,$services_a));
+
+		
         $this->set_response($result, REST_Controller::HTTP_OK);
     }
 
@@ -1727,9 +1741,11 @@ class Api extends REST_Controller
         $criteria = new \Doctrine\Common\Collections\Criteria();
         $expresion = new \Doctrine\Common\Collections\Expr\Comparison("id", \Doctrine\Common\Collections\Expr\Comparison::IN, $subcategories);
         $expresion3 = new \Doctrine\Common\Collections\Expr\Comparison("visible", \Doctrine\Common\Collections\Expr\Comparison::EQ, 1);
+        // $expresion4 = new \Doctrine\Common\Collections\Expr\Comparison("enabled", \Doctrine\Common\Collections\Expr\Comparison::EQ, 1);
 		
 		$criteria->where($expresion);
 		$criteria->andwhere($expresion3);
+		// $criteria->andwhere($expresion4);
         $subcategoriesObj = $sub_repo->matching($criteria)->toArray();
         $subcatego_r = array();
         foreach ($subcategoriesObj as $subcategory) {
@@ -1820,7 +1836,7 @@ class Api extends REST_Controller
 		$config['protocol'] = 'smtp';
 		$config['smtp_host'] = 'smtp.googlemail.com';
 		$config['smtp_user'] = 'losypco@gmail.com';
-		$config['smtp_pass'] = 'Carlos12d3.';
+		$config['smtp_pass'] = 'Carlos123.';
 		$config['smtp_port'] = 465;
 		$config['mailtype'] = 'html';
 		$this->email->initialize($config);
@@ -1834,6 +1850,7 @@ class Api extends REST_Controller
 		$this->email->subject($subject);
 		$this->email->message($body);
 
-		$this->email->send();
+		$resp  = $this->email->send();
+		print_r($resp);
 	}
 }
